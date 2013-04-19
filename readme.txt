@@ -8,8 +8,11 @@
 #	Member:				#
 #	- Jaehwan Lee			#
 #	- Sujeong Kim			#
+#					#
+#	Project started from April.19	#
 #########################################
 
 1. This project is to make a 'Titan' compatible DSM tool.
 2. Platform: JDK1.7
 3. IDE: NetBeans 7
+
