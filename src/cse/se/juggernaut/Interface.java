@@ -1,19 +1,17 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Software Engineering Project Juggernaut
+ * Jaehwan Lee
+ * Sujeong Kim
  */
 package cse.se.juggernaut;
 
-/**
- *
- * @author Administrator
- */
 public class Interface extends javax.swing.JFrame {
 
     /**
      * Creates new form Interface
      */
     public Interface() {
+        System.out.println("Interface Initialized");
         initComponents();
     }
 
@@ -27,167 +25,264 @@ public class Interface extends javax.swing.JFrame {
     private void initComponents() {
 
         jToolBar2 = new javax.swing.JToolBar();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        IconRedraw = new javax.swing.JButton();
+        jSeparator11 = new javax.swing.JToolBar.Separator();
+        IconNewDSM = new javax.swing.JButton();
+        IconOpenDSM = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JToolBar.Separator();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        IconSaveDSM = new javax.swing.JButton();
+        IconSaveDSMAs = new javax.swing.JButton();
+        jSeparator12 = new javax.swing.JToolBar.Separator();
+        IconNewClustering = new javax.swing.JButton();
+        IconLoadClustering = new javax.swing.JButton();
+        jSeparator13 = new javax.swing.JToolBar.Separator();
+        IconSaveClustering = new javax.swing.JButton();
+        IconSaveClusteringAs = new javax.swing.JButton();
         jSplitPane1 = new javax.swing.JSplitPane();
         jPanel1 = new javax.swing.JPanel();
         jToolBar1 = new javax.swing.JToolBar();
-        jButton7 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        IconNewDSMRow = new javax.swing.JButton();
+        IconRename = new javax.swing.JButton();
+        IconDelete = new javax.swing.JButton();
+        jSeparator14 = new javax.swing.JPopupMenu.Separator();
+        IconExpandAll = new javax.swing.JButton();
+        IconCollapseAll = new javax.swing.JButton();
         jSeparator8 = new javax.swing.JPopupMenu.Separator();
-        jButton9 = new javax.swing.JButton();
-        jButton10 = new javax.swing.JButton();
+        IconGroup = new javax.swing.JButton();
+        IconUngroup = new javax.swing.JButton();
         jSeparator9 = new javax.swing.JPopupMenu.Separator();
-        jButton11 = new javax.swing.JButton();
-        jButton12 = new javax.swing.JButton();
+        IconMoveUp = new javax.swing.JButton();
+        IconMoveDown = new javax.swing.JButton();
         jSeparator10 = new javax.swing.JPopupMenu.Separator();
-        jButton13 = new javax.swing.JButton();
+        IconSort = new javax.swing.JButton();
+        IconPartition = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTree1 = new javax.swing.JTree();
+        moduleTree = new javax.swing.JTree();
         jPanel2 = new javax.swing.JPanel();
         jMenuBar1 = new javax.swing.JMenuBar();
         MenuFile = new javax.swing.JMenu();
+        ItemNewDSM = new javax.swing.JMenuItem();
         ItemOpenDSM = new javax.swing.JMenuItem();
-        ItemOpenDSM1 = new javax.swing.JMenuItem();
         jSeparator2 = new javax.swing.JPopupMenu.Separator();
-        ItemNewClustering = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        ItemSaveDSM = new javax.swing.JMenuItem();
+        ItemSaveDSMAs = new javax.swing.JMenuItem();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenuItem5 = new javax.swing.JMenuItem();
+        ItemNewClustering = new javax.swing.JMenuItem();
+        ItemLoadClustering = new javax.swing.JMenuItem();
         jSeparator4 = new javax.swing.JPopupMenu.Separator();
-        jMenu6 = new javax.swing.JMenu();
-        jMenuItem7 = new javax.swing.JMenuItem();
-        jMenuItem8 = new javax.swing.JMenuItem();
+        ItemSaveClustering = new javax.swing.JMenuItem();
+        ItemSaveClusteringAs = new javax.swing.JMenuItem();
         jSeparator5 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        jMenuItem9 = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
-        jMenuItem10 = new javax.swing.JMenuItem();
+        ItemExit = new javax.swing.JMenuItem();
+        MenuMetrics = new javax.swing.JMenu();
+        ItemPropagationCost = new javax.swing.JMenuItem();
+        MenuView = new javax.swing.JMenu();
+        ItemRedraw = new javax.swing.JMenuItem();
         jSeparator6 = new javax.swing.JPopupMenu.Separator();
-        jMenuItem11 = new javax.swing.JMenuItem();
+        ItemFind = new javax.swing.JMenuItem();
         jSeparator7 = new javax.swing.JPopupMenu.Separator();
-        jCheckBoxMenuItem1 = new javax.swing.JCheckBoxMenuItem();
-        jCheckBoxMenuItem2 = new javax.swing.JCheckBoxMenuItem();
-        jMenu5 = new javax.swing.JMenu();
-        jMenuItem12 = new javax.swing.JMenuItem();
+        ItemShowRowLabels = new javax.swing.JCheckBoxMenuItem();
+        ItemShowDepStr = new javax.swing.JCheckBoxMenuItem();
+        MenuHelp = new javax.swing.JMenu();
+        ItemAbout = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jToolBar2.setFloatable(false);
         jToolBar2.setMinimumSize(new java.awt.Dimension(600, 23));
 
-        jButton1.setText("Open DSM");
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar2.add(jButton1);
-
-        jButton2.setText("Redraw");
-        jButton2.setFocusable(false);
-        jButton2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton2.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar2.add(jButton2);
-        jToolBar2.add(jSeparator1);
-
-        jButton3.setText("New Clustering");
-        jButton3.setFocusable(false);
-        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        IconRedraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/redraw.png"))); // NOI18N
+        IconRedraw.setToolTipText("Redraw");
+        IconRedraw.setFocusable(false);
+        IconRedraw.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        IconRedraw.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        IconRedraw.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                IconRedrawActionPerformed(evt);
             }
         });
-        jToolBar2.add(jButton3);
+        jToolBar2.add(IconRedraw);
+        jToolBar2.add(jSeparator11);
 
-        jButton4.setText("Load Clustering");
-        jButton4.setFocusable(false);
-        jButton4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton4.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar2.add(jButton4);
+        IconNewDSM.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/new-dsm.png"))); // NOI18N
+        IconNewDSM.setToolTipText("New DSM");
+        IconNewDSM.setFocusable(false);
+        IconNewDSM.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        IconNewDSM.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar2.add(IconNewDSM);
 
-        jButton5.setText("Save Clustering");
-        jButton5.setFocusable(false);
-        jButton5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton5.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar2.add(jButton5);
+        IconOpenDSM.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/open-dsm.png"))); // NOI18N
+        IconOpenDSM.setToolTipText("Open DSM");
+        IconOpenDSM.setFocusable(false);
+        IconOpenDSM.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        IconOpenDSM.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar2.add(IconOpenDSM);
+        jToolBar2.add(jSeparator1);
 
-        jButton6.setText("Save Clustering As");
-        jButton6.setFocusable(false);
-        jButton6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton6.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar2.add(jButton6);
+        IconSaveDSM.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/save-clsx.png"))); // NOI18N
+        IconSaveDSM.setToolTipText("Save DSM");
+        IconSaveDSM.setFocusable(false);
+        IconSaveDSM.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        IconSaveDSM.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar2.add(IconSaveDSM);
 
-        jPanel1.setMinimumSize(new java.awt.Dimension(200, 0));
+        IconSaveDSMAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/save-clsx-as.png"))); // NOI18N
+        IconSaveDSMAs.setToolTipText("Save DSM As...");
+        IconSaveDSMAs.setFocusable(false);
+        IconSaveDSMAs.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        IconSaveDSMAs.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar2.add(IconSaveDSMAs);
+        jToolBar2.add(jSeparator12);
+
+        IconNewClustering.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/new-clsx.png"))); // NOI18N
+        IconNewClustering.setToolTipText("New Clustering");
+        IconNewClustering.setFocusable(false);
+        IconNewClustering.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        IconNewClustering.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar2.add(IconNewClustering);
+
+        IconLoadClustering.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/open-clsx.png"))); // NOI18N
+        IconLoadClustering.setToolTipText("Load CLustering");
+        IconLoadClustering.setFocusable(false);
+        IconLoadClustering.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        IconLoadClustering.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar2.add(IconLoadClustering);
+        jToolBar2.add(jSeparator13);
+
+        IconSaveClustering.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/save-clsx.png"))); // NOI18N
+        IconSaveClustering.setToolTipText("Save Clustering");
+        IconSaveClustering.setFocusable(false);
+        IconSaveClustering.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        IconSaveClustering.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar2.add(IconSaveClustering);
+
+        IconSaveClusteringAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/save-clsx-as.png"))); // NOI18N
+        IconSaveClusteringAs.setToolTipText("Save Clustering As...");
+        IconSaveClusteringAs.setFocusable(false);
+        IconSaveClusteringAs.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        IconSaveClusteringAs.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar2.add(IconSaveClusteringAs);
+
+        jPanel1.setMinimumSize(new java.awt.Dimension(265, 0));
 
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
         jToolBar1.setBorderPainted(false);
+        jToolBar1.setMinimumSize(new java.awt.Dimension(265, 25));
 
-        jButton7.setText("Expand All");
-        jButton7.setFocusable(false);
-        jButton7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton7.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton7);
+        IconNewDSMRow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/new-row.png"))); // NOI18N
+        IconNewDSMRow.setToolTipText("New DSM Row");
+        IconNewDSMRow.setFocusable(false);
+        IconNewDSMRow.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        IconNewDSMRow.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        IconNewDSMRow.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IconNewDSMRowActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(IconNewDSMRow);
 
-        jButton8.setText("Collapse All");
-        jButton8.setFocusable(false);
-        jButton8.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton8.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton8);
+        IconRename.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/rename.png"))); // NOI18N
+        IconRename.setToolTipText("Rename");
+        IconRename.setFocusable(false);
+        IconRename.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        IconRename.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(IconRename);
+
+        IconDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/delete.png"))); // NOI18N
+        IconDelete.setToolTipText("Delete");
+        IconDelete.setFocusable(false);
+        IconDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        IconDelete.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(IconDelete);
+
+        jSeparator14.setOrientation(javax.swing.SwingConstants.VERTICAL);
+        jToolBar1.add(jSeparator14);
+
+        IconExpandAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/expand.png"))); // NOI18N
+        IconExpandAll.setToolTipText("Expand All");
+        IconExpandAll.setFocusable(false);
+        IconExpandAll.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        IconExpandAll.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(IconExpandAll);
+
+        IconCollapseAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/collapse.png"))); // NOI18N
+        IconCollapseAll.setToolTipText("Collapse All");
+        IconCollapseAll.setFocusable(false);
+        IconCollapseAll.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        IconCollapseAll.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(IconCollapseAll);
+
+        jSeparator8.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jToolBar1.add(jSeparator8);
 
-        jButton9.setText("Group");
-        jButton9.setFocusable(false);
-        jButton9.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton9.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton9);
+        IconGroup.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/group.png"))); // NOI18N
+        IconGroup.setToolTipText("Group");
+        IconGroup.setFocusable(false);
+        IconGroup.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        IconGroup.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(IconGroup);
 
-        jButton10.setText("Ungroup");
-        jButton10.setFocusable(false);
-        jButton10.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton10.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton10);
+        IconUngroup.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/ungroup.png"))); // NOI18N
+        IconUngroup.setToolTipText("Ungroup");
+        IconUngroup.setFocusable(false);
+        IconUngroup.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        IconUngroup.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(IconUngroup);
+
+        jSeparator9.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jToolBar1.add(jSeparator9);
 
-        jButton11.setText("Move Up");
-        jButton11.setFocusable(false);
-        jButton11.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton11.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton11);
+        IconMoveUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/up.png"))); // NOI18N
+        IconMoveUp.setToolTipText("Move Up");
+        IconMoveUp.setFocusable(false);
+        IconMoveUp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        IconMoveUp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(IconMoveUp);
 
-        jButton12.setText("Move Down");
-        jButton12.setFocusable(false);
-        jButton12.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton12.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton12);
+        IconMoveDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/down.png"))); // NOI18N
+        IconMoveDown.setToolTipText("Move Down");
+        IconMoveDown.setFocusable(false);
+        IconMoveDown.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        IconMoveDown.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(IconMoveDown);
+
+        jSeparator10.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jToolBar1.add(jSeparator10);
 
-        jButton13.setText("Delete");
-        jButton13.setFocusable(false);
-        jButton13.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton13.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jToolBar1.add(jButton13);
+        IconSort.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/sort.png"))); // NOI18N
+        IconSort.setToolTipText("Sort");
+        IconSort.setFocusable(false);
+        IconSort.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        IconSort.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jToolBar1.add(IconSort);
 
-        jTree1.setMaximumSize(new java.awt.Dimension(2048, 64));
-        jTree1.setMinimumSize(new java.awt.Dimension(400, 0));
-        jTree1.setPreferredSize(new java.awt.Dimension(200, 64));
-        jScrollPane1.setViewportView(jTree1);
+        IconPartition.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/partition.png"))); // NOI18N
+        IconPartition.setToolTipText("Partition");
+        IconPartition.setFocusable(false);
+        IconPartition.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        IconPartition.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        IconPartition.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IconPartitionActionPerformed(evt);
+            }
+        });
+        jToolBar1.add(IconPartition);
+
+        jScrollPane1.setMinimumSize(new java.awt.Dimension(252, 23));
+
+        moduleTree.setMaximumSize(new java.awt.Dimension(2048, 64));
+        moduleTree.setMinimumSize(new java.awt.Dimension(265, 0));
+        moduleTree.setPreferredSize(new java.awt.Dimension(200, 64));
+        jScrollPane1.setViewportView(moduleTree);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 412, Short.MAX_VALUE)
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane1)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -205,7 +300,7 @@ public class Interface extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 855, Short.MAX_VALUE)
+            .addGap(0, 790, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -216,76 +311,97 @@ public class Interface extends javax.swing.JFrame {
 
         MenuFile.setText("File");
 
-        ItemOpenDSM.setText("jMenuItem1");
-        MenuFile.add(ItemOpenDSM);
+        ItemNewDSM.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/new-dsm.png"))); // NOI18N
+        ItemNewDSM.setText("New DSM");
+        MenuFile.add(ItemNewDSM);
 
-        ItemOpenDSM1.setText("jMenuItem1");
-        MenuFile.add(ItemOpenDSM1);
+        ItemOpenDSM.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/open-dsm.png"))); // NOI18N
+        ItemOpenDSM.setText("Open DSM...");
+        MenuFile.add(ItemOpenDSM);
         MenuFile.add(jSeparator2);
 
-        ItemNewClustering.setText("jMenuItem2");
-        MenuFile.add(ItemNewClustering);
+        ItemSaveDSM.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/save-clsx.png"))); // NOI18N
+        ItemSaveDSM.setText("Save DSM");
+        ItemSaveDSM.setEnabled(false);
+        ItemSaveDSM.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ItemSaveDSMActionPerformed(evt);
+            }
+        });
+        MenuFile.add(ItemSaveDSM);
 
-        jMenuItem3.setText("jMenuItem2");
-        MenuFile.add(jMenuItem3);
+        ItemSaveDSMAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/save-clsx-as.png"))); // NOI18N
+        ItemSaveDSMAs.setText("Save DSM As...");
+        ItemSaveDSMAs.setEnabled(false);
+        MenuFile.add(ItemSaveDSMAs);
         MenuFile.add(jSeparator3);
 
-        jMenuItem4.setText("jMenuItem2");
-        MenuFile.add(jMenuItem4);
+        ItemNewClustering.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/new-clsx.png"))); // NOI18N
+        ItemNewClustering.setText("New Clustering");
+        MenuFile.add(ItemNewClustering);
 
-        jMenuItem5.setText("jMenuItem2");
-        MenuFile.add(jMenuItem5);
+        ItemLoadClustering.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/open-clsx.png"))); // NOI18N
+        ItemLoadClustering.setText("Load Clustering ...");
+        MenuFile.add(ItemLoadClustering);
         MenuFile.add(jSeparator4);
 
-        jMenu6.setText("jMenu6");
+        ItemSaveClustering.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/save-clsx.png"))); // NOI18N
+        ItemSaveClustering.setText("Save Clustering");
+        ItemSaveClustering.setEnabled(false);
+        MenuFile.add(ItemSaveClustering);
 
-        jMenuItem7.setText("jMenuItem2");
-        jMenu6.add(jMenuItem7);
-
-        jMenuItem8.setText("jMenuItem2");
-        jMenu6.add(jMenuItem8);
-
-        MenuFile.add(jMenu6);
+        ItemSaveClusteringAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/save-clsx-as.png"))); // NOI18N
+        ItemSaveClusteringAs.setText("Save Clustering As...");
+        ItemSaveClusteringAs.setEnabled(false);
+        MenuFile.add(ItemSaveClusteringAs);
         MenuFile.add(jSeparator5);
 
-        jMenuItem6.setText("jMenuItem6");
-        MenuFile.add(jMenuItem6);
+        ItemExit.setText("Exit");
+        MenuFile.add(ItemExit);
 
         jMenuBar1.add(MenuFile);
 
-        jMenu2.setText("Metrics");
+        MenuMetrics.setText("Metrics");
 
-        jMenuItem9.setText("jMenuItem1");
-        jMenu2.add(jMenuItem9);
+        ItemPropagationCost.setText("Propagation Cost");
+        ItemPropagationCost.setEnabled(false);
+        ItemPropagationCost.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ItemPropagationCostActionPerformed(evt);
+            }
+        });
+        MenuMetrics.add(ItemPropagationCost);
 
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(MenuMetrics);
 
-        jMenu4.setText("View");
+        MenuView.setText("View");
 
-        jMenuItem10.setText("jMenuItem1");
-        jMenu4.add(jMenuItem10);
-        jMenu4.add(jSeparator6);
+        ItemRedraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/redraw.png"))); // NOI18N
+        ItemRedraw.setText("Redraw");
+        ItemRedraw.setEnabled(false);
+        MenuView.add(ItemRedraw);
+        MenuView.add(jSeparator6);
 
-        jMenuItem11.setText("jMenuItem1");
-        jMenu4.add(jMenuItem11);
-        jMenu4.add(jSeparator7);
+        ItemFind.setText("Find");
+        ItemFind.setEnabled(false);
+        MenuView.add(ItemFind);
+        MenuView.add(jSeparator7);
 
-        jCheckBoxMenuItem1.setSelected(true);
-        jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
-        jMenu4.add(jCheckBoxMenuItem1);
+        ItemShowRowLabels.setText("Show Row Labels");
+        MenuView.add(ItemShowRowLabels);
 
-        jCheckBoxMenuItem2.setSelected(true);
-        jCheckBoxMenuItem2.setText("jCheckBoxMenuItem1");
-        jMenu4.add(jCheckBoxMenuItem2);
+        ItemShowDepStr.setText("jCheckBoxMenuItem1");
+        ItemShowDepStr.setEnabled(false);
+        MenuView.add(ItemShowDepStr);
 
-        jMenuBar1.add(jMenu4);
+        jMenuBar1.add(MenuView);
 
-        jMenu5.setText("Help");
+        MenuHelp.setText("Help");
 
-        jMenuItem12.setText("jMenuItem12");
-        jMenu5.add(jMenuItem12);
+        ItemAbout.setText("Help");
+        MenuHelp.add(ItemAbout);
 
-        jMenuBar1.add(jMenu5);
+        jMenuBar1.add(MenuHelp);
 
         setJMenuBar(jMenuBar1);
 
@@ -294,7 +410,7 @@ public class Interface extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1062, Short.MAX_VALUE)
+            .addComponent(jSplitPane1)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -309,84 +425,76 @@ public class Interface extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void IconRedrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconRedrawActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_IconRedrawActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Interface.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void ItemSaveDSMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemSaveDSMActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ItemSaveDSMActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Interface().setVisible(true);
-            }
-        });
-    }
+    private void ItemPropagationCostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemPropagationCostActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ItemPropagationCostActionPerformed
+
+    private void IconNewDSMRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconNewDSMRowActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_IconNewDSMRowActionPerformed
+
+    private void IconPartitionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconPartitionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_IconPartitionActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton IconCollapseAll;
+    private javax.swing.JButton IconDelete;
+    private javax.swing.JButton IconExpandAll;
+    private javax.swing.JButton IconGroup;
+    private javax.swing.JButton IconLoadClustering;
+    private javax.swing.JButton IconMoveDown;
+    private javax.swing.JButton IconMoveUp;
+    private javax.swing.JButton IconNewClustering;
+    private javax.swing.JButton IconNewDSM;
+    private javax.swing.JButton IconNewDSMRow;
+    private javax.swing.JButton IconOpenDSM;
+    private javax.swing.JButton IconPartition;
+    private javax.swing.JButton IconRedraw;
+    private javax.swing.JButton IconRename;
+    private javax.swing.JButton IconSaveClustering;
+    private javax.swing.JButton IconSaveClusteringAs;
+    private javax.swing.JButton IconSaveDSM;
+    private javax.swing.JButton IconSaveDSMAs;
+    private javax.swing.JButton IconSort;
+    private javax.swing.JButton IconUngroup;
+    private javax.swing.JMenuItem ItemAbout;
+    private javax.swing.JMenuItem ItemExit;
+    private javax.swing.JMenuItem ItemFind;
+    private javax.swing.JMenuItem ItemLoadClustering;
     private javax.swing.JMenuItem ItemNewClustering;
+    private javax.swing.JMenuItem ItemNewDSM;
     private javax.swing.JMenuItem ItemOpenDSM;
-    private javax.swing.JMenuItem ItemOpenDSM1;
+    private javax.swing.JMenuItem ItemPropagationCost;
+    private javax.swing.JMenuItem ItemRedraw;
+    private javax.swing.JMenuItem ItemSaveClustering;
+    private javax.swing.JMenuItem ItemSaveClusteringAs;
+    private javax.swing.JMenuItem ItemSaveDSM;
+    private javax.swing.JMenuItem ItemSaveDSMAs;
+    private javax.swing.JCheckBoxMenuItem ItemShowDepStr;
+    private javax.swing.JCheckBoxMenuItem ItemShowRowLabels;
     private javax.swing.JMenu MenuFile;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
-    private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem2;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu4;
-    private javax.swing.JMenu jMenu5;
-    private javax.swing.JMenu jMenu6;
+    private javax.swing.JMenu MenuHelp;
+    private javax.swing.JMenu MenuMetrics;
+    private javax.swing.JMenu MenuView;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem10;
-    private javax.swing.JMenuItem jMenuItem11;
-    private javax.swing.JMenuItem jMenuItem12;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
-    private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JPopupMenu.Separator jSeparator10;
+    private javax.swing.JToolBar.Separator jSeparator11;
+    private javax.swing.JToolBar.Separator jSeparator12;
+    private javax.swing.JToolBar.Separator jSeparator13;
+    private javax.swing.JPopupMenu.Separator jSeparator14;
     private javax.swing.JPopupMenu.Separator jSeparator2;
     private javax.swing.JPopupMenu.Separator jSeparator3;
     private javax.swing.JPopupMenu.Separator jSeparator4;
@@ -398,6 +506,6 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JSplitPane jSplitPane1;
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
-    private javax.swing.JTree jTree1;
+    private javax.swing.JTree moduleTree;
     // End of variables declaration//GEN-END:variables
 }
