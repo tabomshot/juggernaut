@@ -6,103 +6,171 @@
 package cse.se.juggernaut;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.ListIterator;
+import javax.swing.tree.DefaultMutableTreeNode;
+
+/**
+ *
+ * @author jaehwan
+ */
 
 
 public class DSMatrix {
-    private int size;
-    private ArrayList<ArrayList<Integer>> matrix;
-    private ArrayList<String> entry;
     
-    public void init(int size)
+    private DefaultMutableTreeNode root;
+    
+    class Module {
+        private String name;
+        private ArrayList<String> depList;
+        private boolean expand;
+        
+        @Override
+        public String toString(){return name;}
+    }
+    
+    public DSMatrix(){
+        Module nroot = new Module();
+        nroot.name = "$root";
+        nroot.depList = null;
+        nroot.expand = false;
+        
+        this.root = new DefaultMutableTreeNode(nroot);
+    }
+   
+    public void addNode(String name, ArrayList<String> depList)
     {
-        entry = new ArrayList<>(size);
-        for(int i=0; i<size; i++){
-            entry.add("Entry_"+i);
+        Module toadd = new Module();
+        toadd.name = name;
+        toadd.depList = depList;
+        
+        root.add(new DefaultMutableTreeNode(toadd));
+    }
+    
+    public boolean renameNode(String oldName, String newName)
+    {
+        DefaultMutableTreeNode node = this.findNode(root, oldName);
+        
+        if(node!=null){
+            
+            Module module = (Module)node.getUserObject();
+            module.name = newName;
+            return true;
+        }
+        return false;
+    }
+    
+    public void deleteNode(String name)
+    {
+        DefaultMutableTreeNode todel = findNode(this.root, name);
+        todel.removeFromParent();
+    }
+    
+    public boolean moveNodeUp(String name)
+    {
+        // get node to move
+        DefaultMutableTreeNode toMove = findNode(this.root, name);
+        DefaultMutableTreeNode parent = (DefaultMutableTreeNode) toMove.getParent();
+        
+        // get siblings
+        ArrayList<DefaultMutableTreeNode> children = new ArrayList<DefaultMutableTreeNode>();
+        
+        DefaultMutableTreeNode tmp = (DefaultMutableTreeNode)parent.getFirstChild();
+        while(tmp.getNextSibling() != null){
+            children.add(tmp.getNextSibling());
+            tmp = tmp.getNextSibling();
         }
         
-        matrix = new ArrayList<>();
-        for(int i=0; i<size; i++){
-            ArrayList<Integer> toadd = new ArrayList<>();
-            for(int j=0; j<size; j++){
-                toadd.add(0);
+        if(children.indexOf(toMove) > 0){
+            // remove from parent
+            ListIterator litr = children.listIterator();
+            while(litr.hasNext()){
+                tmp = (DefaultMutableTreeNode)litr.next();
+                tmp.removeFromParent();
             }
-            matrix.add(toadd);
+
+            // move node up
+            int index = children.indexOf(toMove);
+            tmp = children.get(index);
+            children.remove(tmp);
+            children.add(index-1, tmp);
+                    
+            // add to parent again
+            litr = children.listIterator();
+            while(litr.hasNext()){
+                tmp = (DefaultMutableTreeNode)litr.next();
+                parent.add(tmp);
+            }
+            
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
+    public boolean moveNodeDown(String name)
+    {
+        // get node to move
+        DefaultMutableTreeNode toMove = findNode(this.root, name);
+        DefaultMutableTreeNode parent = (DefaultMutableTreeNode) toMove.getParent();
+        
+        // get siblings
+        ArrayList<DefaultMutableTreeNode> children = new ArrayList<DefaultMutableTreeNode>();
+        
+        DefaultMutableTreeNode tmp = (DefaultMutableTreeNode)parent.getFirstChild();
+        while(tmp.getNextSibling() != null){
+            children.add(tmp.getNextSibling());
+            tmp = tmp.getNextSibling();
         }
         
-        this.size = size;
-    }
-    
-    public void addRow(String mname)
-    {
-        entry.add(mname);
-        
-        ListIterator<ArrayList<Integer>> litr = matrix.listIterator();
-        while(litr.hasNext()){
-            litr.next().add(0);
+        if(children.indexOf(toMove) < parent.getChildCount()-1){
+            // remove from parent
+            ListIterator litr = children.listIterator();
+            while(litr.hasNext()){
+                tmp = (DefaultMutableTreeNode)litr.next();
+                tmp.removeFromParent();
+            }
+
+            // move node down
+            int index = children.indexOf(toMove);
+            tmp = children.get(index);
+            children.remove(tmp);
+            children.add(index+1, tmp);
+                    
+            // add to parent again
+            litr = children.listIterator();
+            while(litr.hasNext()){
+                tmp = (DefaultMutableTreeNode)litr.next();
+                parent.add(tmp);
+            }
+            
+            return true;
+        } else {
+            return false;
         }
+    }
+    
+    
+    public DefaultMutableTreeNode findNode (DefaultMutableTreeNode root, String s) {
+        Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();
         
-        ArrayList<Integer> toadd = new ArrayList<>();
-        for(int i=0; i<size+1; i++){
-            toadd.add(0);
+        while (e.hasMoreElements()) {
+            DefaultMutableTreeNode node = e.nextElement();
+            if (node.toString().equalsIgnoreCase(s)) {
+                return node;
+            }
         }
-        matrix.add(toadd);
-        this.size++;
+        return null;
     }
-        
-    public void deleteRow(int index)
-    {
-        entry.remove(index);
-        
-        ListIterator<ArrayList<Integer>> litr = matrix.listIterator();
-        while(litr.hasNext()){
-            ArrayList<Integer> rmcol = litr.next();
-            rmcol.remove(index);
+    
+    public void moveNodeTo(DefaultMutableTreeNode toHere, DefaultMutableTreeNode[] args){
+        if(toHere!=null && args!=null && args.length>0){
+            for(int i=0;i<args.length;i++){
+                args[i].removeFromParent();
+                toHere.add(args[i]);
+            }
         }
-        matrix.remove(index);
-        size--;
     }
     
-    public void renameRow(int index, String newName)
-    {
-        entry.set(index, newName);
-    }
-    
-    // index : node to go up
-    public void upRow(int index)
-    {
-        ArrayList<Integer> temp = matrix.get(index);
-        matrix.set(index, matrix.get(index-1));
-        matrix.set(index-1, temp);
-        
-        String stemp = entry.get(index);
-        entry.set(index, entry.get(index-1));
-        entry.set(index-1, stemp);
-    }
-    
-    public void upRow(int index, int count)
-    {
-        // to do : implement 
-    }
-    
-    public void downRow(int index)
-    {
-        ArrayList<Integer> temp = matrix.get(index);
-        matrix.set(index, matrix.get(index+1));
-        matrix.set(index+1, temp);
-        
-        String stemp = entry.get(index);
-        entry.set(index, entry.get(index+1));
-        entry.set(index+1, stemp);
-    }
-    
-    public void downRow(int index, int count)
-    {
-        // to do : implement 
-    }
-    
-    public int getIndex(String mname)
-    {
-        return entry.indexOf(mname);
-    }
+    public DefaultMutableTreeNode getRoot(){ return root; }
 }
