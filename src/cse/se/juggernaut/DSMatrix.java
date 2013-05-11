@@ -6,7 +6,7 @@
 package cse.se.juggernaut;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
+import java.util.Enumeration; 
 import java.util.ListIterator;
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -14,8 +14,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
  *
  * @author jaehwan
  */
-
-
 public class DSMatrix {
     
     private DefaultMutableTreeNode root;
@@ -49,21 +47,38 @@ public class DSMatrix {
     
     public boolean renameNode(String oldName, String newName)
     {
+        // rename module
         DefaultMutableTreeNode node = this.findNode(root, oldName);
-        
         if(node!=null){
-            
             Module module = (Module)node.getUserObject();
             module.name = newName;
             return true;
         }
+        
+        // rename module in dependency list
+        Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();
+        while (e.hasMoreElements()) {
+            node = e.nextElement();
+            Module module = (Module)node.getUserObject();
+            module.depList.remove(oldName);
+            module.depList.add(newName);
+        }
+        
         return false;
     }
     
     public void deleteNode(String name)
     {
+        // remove module from tree
         DefaultMutableTreeNode todel = findNode(this.root, name);
         todel.removeFromParent();
+        
+        // remove module dependencies
+        Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();
+        while (e.hasMoreElements()) {
+            DefaultMutableTreeNode node = e.nextElement();
+            ((Module)node.getUserObject()).depList.remove(name);
+        }
     }
     
     public boolean moveNodeUp(String name)
@@ -73,9 +88,10 @@ public class DSMatrix {
         DefaultMutableTreeNode parent = (DefaultMutableTreeNode) toMove.getParent();
         
         // get siblings
-        ArrayList<DefaultMutableTreeNode> children = new ArrayList<DefaultMutableTreeNode>();
+        ArrayList<DefaultMutableTreeNode> children = new ArrayList<>();
         
         DefaultMutableTreeNode tmp = (DefaultMutableTreeNode)parent.getFirstChild();
+        children.add(tmp);
         while(tmp.getNextSibling() != null){
             children.add(tmp.getNextSibling());
             tmp = tmp.getNextSibling();
@@ -115,9 +131,9 @@ public class DSMatrix {
         DefaultMutableTreeNode parent = (DefaultMutableTreeNode) toMove.getParent();
         
         // get siblings
-        ArrayList<DefaultMutableTreeNode> children = new ArrayList<DefaultMutableTreeNode>();
-        
+        ArrayList<DefaultMutableTreeNode> children = new ArrayList();
         DefaultMutableTreeNode tmp = (DefaultMutableTreeNode)parent.getFirstChild();
+        children.add(tmp);
         while(tmp.getNextSibling() != null){
             children.add(tmp.getNextSibling());
             tmp = tmp.getNextSibling();
@@ -150,8 +166,9 @@ public class DSMatrix {
         }
     }
     
-    
     public DefaultMutableTreeNode findNode (DefaultMutableTreeNode root, String s) {
+        
+        // get node list
         Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();
         
         while (e.hasMoreElements()) {
@@ -173,4 +190,26 @@ public class DSMatrix {
     }
     
     public DefaultMutableTreeNode getRoot(){ return root; }
+    
+    public void group(String gname)
+    {
+        
+    }
+    
+    public void ungroup(String gname)
+    {
+        
+    }
+    
+    public void expandGroup(String name)
+    {
+        DefaultMutableTreeNode toexp = findNode(this.root, name);
+        ((Module)toexp.getUserObject()).expand = true;
+    }
+    
+    public void collapseGroup(String name)
+    {
+        DefaultMutableTreeNode toexp = findNode(this.root, name);
+        ((Module)toexp.getUserObject()).expand = false;
+    }
 }
