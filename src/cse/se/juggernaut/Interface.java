@@ -5,13 +5,23 @@
  */
 package cse.se.juggernaut;
 
+import javax.swing.JFileChooser;
+
 public class Interface extends javax.swing.JFrame {
 
     /**
      * Creates new form Interface
+     * Creates control interfaces
      */
     public Interface() {
+        
+        this.dsmChanged = false;
+        this.clusterChanged = false;
+        this.fileChooser = new javax.swing.JFileChooser();
+        this.controlInterface = new Controller();
+        
         System.out.println("Interface Initialized");
+        
         initComponents();
     }
 
@@ -93,6 +103,7 @@ public class Interface extends javax.swing.JFrame {
 
         IconRedraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/redraw.png"))); // NOI18N
         IconRedraw.setToolTipText("Redraw");
+        IconRedraw.setEnabled(false);
         IconRedraw.setFocusable(false);
         IconRedraw.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         IconRedraw.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -109,6 +120,11 @@ public class Interface extends javax.swing.JFrame {
         IconNewDSM.setFocusable(false);
         IconNewDSM.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         IconNewDSM.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        IconNewDSM.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IconNewDSMActionPerformed(evt);
+            }
+        });
         jToolBar2.add(IconNewDSM);
 
         IconOpenDSM.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/open-dsm.png"))); // NOI18N
@@ -116,11 +132,17 @@ public class Interface extends javax.swing.JFrame {
         IconOpenDSM.setFocusable(false);
         IconOpenDSM.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         IconOpenDSM.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        IconOpenDSM.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IconOpenDSMActionPerformed(evt);
+            }
+        });
         jToolBar2.add(IconOpenDSM);
         jToolBar2.add(jSeparator1);
 
         IconSaveDSM.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/save-clsx.png"))); // NOI18N
         IconSaveDSM.setToolTipText("Save DSM");
+        IconSaveDSM.setEnabled(false);
         IconSaveDSM.setFocusable(false);
         IconSaveDSM.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         IconSaveDSM.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -128,6 +150,7 @@ public class Interface extends javax.swing.JFrame {
 
         IconSaveDSMAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/save-clsx-as.png"))); // NOI18N
         IconSaveDSMAs.setToolTipText("Save DSM As...");
+        IconSaveDSMAs.setEnabled(false);
         IconSaveDSMAs.setFocusable(false);
         IconSaveDSMAs.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         IconSaveDSMAs.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -151,6 +174,7 @@ public class Interface extends javax.swing.JFrame {
 
         IconSaveClustering.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/save-clsx.png"))); // NOI18N
         IconSaveClustering.setToolTipText("Save Clustering");
+        IconSaveClustering.setEnabled(false);
         IconSaveClustering.setFocusable(false);
         IconSaveClustering.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         IconSaveClustering.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -158,6 +182,7 @@ public class Interface extends javax.swing.JFrame {
 
         IconSaveClusteringAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/save-clsx-as.png"))); // NOI18N
         IconSaveClusteringAs.setToolTipText("Save Clustering As...");
+        IconSaveClusteringAs.setEnabled(false);
         IconSaveClusteringAs.setFocusable(false);
         IconSaveClusteringAs.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         IconSaveClusteringAs.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -172,6 +197,7 @@ public class Interface extends javax.swing.JFrame {
 
         IconNewDSMRow.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/new-row.png"))); // NOI18N
         IconNewDSMRow.setToolTipText("New DSM Row");
+        IconNewDSMRow.setEnabled(false);
         IconNewDSMRow.setFocusable(false);
         IconNewDSMRow.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         IconNewDSMRow.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -184,16 +210,28 @@ public class Interface extends javax.swing.JFrame {
 
         IconRename.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/rename.png"))); // NOI18N
         IconRename.setToolTipText("Rename");
+        IconRename.setEnabled(false);
         IconRename.setFocusable(false);
         IconRename.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         IconRename.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        IconRename.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IconRenameActionPerformed(evt);
+            }
+        });
         jToolBar1.add(IconRename);
 
         IconDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/delete.png"))); // NOI18N
         IconDelete.setToolTipText("Delete");
+        IconDelete.setEnabled(false);
         IconDelete.setFocusable(false);
         IconDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         IconDelete.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        IconDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IconDeleteActionPerformed(evt);
+            }
+        });
         jToolBar1.add(IconDelete);
 
         jSeparator14.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -201,16 +239,28 @@ public class Interface extends javax.swing.JFrame {
 
         IconExpandAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/expand.png"))); // NOI18N
         IconExpandAll.setToolTipText("Expand All");
+        IconExpandAll.setEnabled(false);
         IconExpandAll.setFocusable(false);
         IconExpandAll.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         IconExpandAll.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        IconExpandAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IconExpandAllActionPerformed(evt);
+            }
+        });
         jToolBar1.add(IconExpandAll);
 
         IconCollapseAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/collapse.png"))); // NOI18N
         IconCollapseAll.setToolTipText("Collapse All");
+        IconCollapseAll.setEnabled(false);
         IconCollapseAll.setFocusable(false);
         IconCollapseAll.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         IconCollapseAll.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        IconCollapseAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IconCollapseAllActionPerformed(evt);
+            }
+        });
         jToolBar1.add(IconCollapseAll);
 
         jSeparator8.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -218,16 +268,28 @@ public class Interface extends javax.swing.JFrame {
 
         IconGroup.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/group.png"))); // NOI18N
         IconGroup.setToolTipText("Group");
+        IconGroup.setEnabled(false);
         IconGroup.setFocusable(false);
         IconGroup.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         IconGroup.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        IconGroup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IconGroupActionPerformed(evt);
+            }
+        });
         jToolBar1.add(IconGroup);
 
         IconUngroup.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/ungroup.png"))); // NOI18N
         IconUngroup.setToolTipText("Ungroup");
+        IconUngroup.setEnabled(false);
         IconUngroup.setFocusable(false);
         IconUngroup.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         IconUngroup.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        IconUngroup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IconUngroupActionPerformed(evt);
+            }
+        });
         jToolBar1.add(IconUngroup);
 
         jSeparator9.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -235,16 +297,28 @@ public class Interface extends javax.swing.JFrame {
 
         IconMoveUp.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/up.png"))); // NOI18N
         IconMoveUp.setToolTipText("Move Up");
+        IconMoveUp.setEnabled(false);
         IconMoveUp.setFocusable(false);
         IconMoveUp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         IconMoveUp.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        IconMoveUp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IconMoveUpActionPerformed(evt);
+            }
+        });
         jToolBar1.add(IconMoveUp);
 
         IconMoveDown.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/down.png"))); // NOI18N
         IconMoveDown.setToolTipText("Move Down");
+        IconMoveDown.setEnabled(false);
         IconMoveDown.setFocusable(false);
         IconMoveDown.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         IconMoveDown.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        IconMoveDown.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IconMoveDownActionPerformed(evt);
+            }
+        });
         jToolBar1.add(IconMoveDown);
 
         jSeparator10.setOrientation(javax.swing.SwingConstants.VERTICAL);
@@ -252,13 +326,20 @@ public class Interface extends javax.swing.JFrame {
 
         IconSort.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/sort.png"))); // NOI18N
         IconSort.setToolTipText("Sort");
+        IconSort.setEnabled(false);
         IconSort.setFocusable(false);
         IconSort.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         IconSort.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        IconSort.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IconSortActionPerformed(evt);
+            }
+        });
         jToolBar1.add(IconSort);
 
         IconPartition.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/partition.png"))); // NOI18N
         IconPartition.setToolTipText("Partition");
+        IconPartition.setEnabled(false);
         IconPartition.setFocusable(false);
         IconPartition.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         IconPartition.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -271,9 +352,11 @@ public class Interface extends javax.swing.JFrame {
 
         jScrollPane1.setMinimumSize(new java.awt.Dimension(252, 23));
 
+        moduleTree.setExpandsSelectedPaths(false);
         moduleTree.setMaximumSize(new java.awt.Dimension(2048, 64));
         moduleTree.setMinimumSize(new java.awt.Dimension(265, 0));
         moduleTree.setPreferredSize(new java.awt.Dimension(200, 64));
+        moduleTree.setVisible(false);
         jScrollPane1.setViewportView(moduleTree);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -290,7 +373,7 @@ public class Interface extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 505, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -313,10 +396,20 @@ public class Interface extends javax.swing.JFrame {
 
         ItemNewDSM.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/new-dsm.png"))); // NOI18N
         ItemNewDSM.setText("New DSM");
+        ItemNewDSM.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ItemNewDSMActionPerformed(evt);
+            }
+        });
         MenuFile.add(ItemNewDSM);
 
         ItemOpenDSM.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/open-dsm.png"))); // NOI18N
         ItemOpenDSM.setText("Open DSM...");
+        ItemOpenDSM.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ItemOpenDSMActionPerformed(evt);
+            }
+        });
         MenuFile.add(ItemOpenDSM);
         MenuFile.add(jSeparator2);
 
@@ -333,30 +426,60 @@ public class Interface extends javax.swing.JFrame {
         ItemSaveDSMAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/save-clsx-as.png"))); // NOI18N
         ItemSaveDSMAs.setText("Save DSM As...");
         ItemSaveDSMAs.setEnabled(false);
+        ItemSaveDSMAs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ItemSaveDSMAsActionPerformed(evt);
+            }
+        });
         MenuFile.add(ItemSaveDSMAs);
         MenuFile.add(jSeparator3);
 
         ItemNewClustering.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/new-clsx.png"))); // NOI18N
         ItemNewClustering.setText("New Clustering");
+        ItemNewClustering.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ItemNewClusteringActionPerformed(evt);
+            }
+        });
         MenuFile.add(ItemNewClustering);
 
         ItemLoadClustering.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/open-clsx.png"))); // NOI18N
         ItemLoadClustering.setText("Load Clustering ...");
+        ItemLoadClustering.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ItemLoadClusteringActionPerformed(evt);
+            }
+        });
         MenuFile.add(ItemLoadClustering);
         MenuFile.add(jSeparator4);
 
         ItemSaveClustering.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/save-clsx.png"))); // NOI18N
         ItemSaveClustering.setText("Save Clustering");
         ItemSaveClustering.setEnabled(false);
+        ItemSaveClustering.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ItemSaveClusteringActionPerformed(evt);
+            }
+        });
         MenuFile.add(ItemSaveClustering);
 
         ItemSaveClusteringAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/save-clsx-as.png"))); // NOI18N
         ItemSaveClusteringAs.setText("Save Clustering As...");
         ItemSaveClusteringAs.setEnabled(false);
+        ItemSaveClusteringAs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ItemSaveClusteringAsActionPerformed(evt);
+            }
+        });
         MenuFile.add(ItemSaveClusteringAs);
         MenuFile.add(jSeparator5);
 
         ItemExit.setText("Exit");
+        ItemExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ItemExitActionPerformed(evt);
+            }
+        });
         MenuFile.add(ItemExit);
 
         jMenuBar1.add(MenuFile);
@@ -379,6 +502,11 @@ public class Interface extends javax.swing.JFrame {
         ItemRedraw.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/redraw.png"))); // NOI18N
         ItemRedraw.setText("Redraw");
         ItemRedraw.setEnabled(false);
+        ItemRedraw.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ItemRedrawActionPerformed(evt);
+            }
+        });
         MenuView.add(ItemRedraw);
         MenuView.add(jSeparator6);
 
@@ -388,6 +516,11 @@ public class Interface extends javax.swing.JFrame {
         MenuView.add(jSeparator7);
 
         ItemShowRowLabels.setText("Show Row Labels");
+        ItemShowRowLabels.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ItemShowRowLabelsActionPerformed(evt);
+            }
+        });
         MenuView.add(ItemShowRowLabels);
 
         ItemShowDepStr.setText("jCheckBoxMenuItem1");
@@ -399,6 +532,11 @@ public class Interface extends javax.swing.JFrame {
         MenuHelp.setText("Help");
 
         ItemAbout.setText("Help");
+        ItemAbout.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ItemAboutActionPerformed(evt);
+            }
+        });
         MenuHelp.add(ItemAbout);
 
         jMenuBar1.add(MenuHelp);
@@ -427,10 +565,12 @@ public class Interface extends javax.swing.JFrame {
 
     private void IconRedrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconRedrawActionPerformed
         // TODO add your handling code here:
+        System.out.println("IconRedraw has been clicked !");
     }//GEN-LAST:event_IconRedrawActionPerformed
 
     private void ItemSaveDSMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemSaveDSMActionPerformed
         // TODO add your handling code here:
+        System.out.println("ItemSaveDSM has been clicked !");
     }//GEN-LAST:event_ItemSaveDSMActionPerformed
 
     private void ItemPropagationCostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemPropagationCostActionPerformed
@@ -439,12 +579,131 @@ public class Interface extends javax.swing.JFrame {
 
     private void IconNewDSMRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconNewDSMRowActionPerformed
         // TODO add your handling code here:
+        System.out.println("IconNewDSMRow has been clicked !");
     }//GEN-LAST:event_IconNewDSMRowActionPerformed
 
     private void IconPartitionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconPartitionActionPerformed
         // TODO add your handling code here:
+        System.out.println("IconPartition has been clicked !");
     }//GEN-LAST:event_IconPartitionActionPerformed
 
+    private void IconMoveUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconMoveUpActionPerformed
+        // TODO add your handling code here:
+        System.out.println("ItemMoveUp has been clicked !");
+    }//GEN-LAST:event_IconMoveUpActionPerformed
+
+    private void ItemOpenDSMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemOpenDSMActionPerformed
+        System.out.println("ItemOpenDSM has been clicked !");
+        
+        int ret = fileChooser.showOpenDialog(this);
+        if(ret == JFileChooser.APPROVE_OPTION){
+            if(controlInterface.openDSM(fileChooser.getSelectedFile())){
+                // TODO : enable DSM workicons
+            } else {
+                // TODO : error
+            }
+        }
+    }//GEN-LAST:event_ItemOpenDSMActionPerformed
+
+    private void ItemNewDSMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemNewDSMActionPerformed
+        // TODO add your handling code here:
+        System.out.println("ItemNewDSM has been clicked !");
+    }//GEN-LAST:event_ItemNewDSMActionPerformed
+
+    private void IconNewDSMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconNewDSMActionPerformed
+        // TODO add your handling code here:
+        System.out.println("IconNewDSM has been clicked !");
+    }//GEN-LAST:event_IconNewDSMActionPerformed
+
+    private void IconOpenDSMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconOpenDSMActionPerformed
+        System.out.println("IconOpenDSM has been clicked !");
+        
+        int ret = fileChooser.showOpenDialog(this);
+        if(ret == JFileChooser.APPROVE_OPTION){
+            if(controlInterface.openDSM(fileChooser.getSelectedFile())){
+                // TODO : enable DSM workicons
+            } else {
+                // TODO : error
+            }
+        }
+    }//GEN-LAST:event_IconOpenDSMActionPerformed
+
+    private void ItemSaveDSMAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemSaveDSMAsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ItemSaveDSMAsActionPerformed
+
+    private void ItemNewClusteringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemNewClusteringActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ItemNewClusteringActionPerformed
+
+    private void ItemLoadClusteringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemLoadClusteringActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ItemLoadClusteringActionPerformed
+
+    private void ItemSaveClusteringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemSaveClusteringActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ItemSaveClusteringActionPerformed
+
+    private void ItemSaveClusteringAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemSaveClusteringAsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ItemSaveClusteringAsActionPerformed
+
+    private void ItemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemExitActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ItemExitActionPerformed
+
+    private void ItemRedrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemRedrawActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ItemRedrawActionPerformed
+
+    private void ItemShowRowLabelsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemShowRowLabelsActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ItemShowRowLabelsActionPerformed
+
+    private void ItemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemAboutActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ItemAboutActionPerformed
+
+    private void IconRenameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconRenameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_IconRenameActionPerformed
+
+    private void IconDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconDeleteActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_IconDeleteActionPerformed
+
+    private void IconExpandAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconExpandAllActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_IconExpandAllActionPerformed
+
+    private void IconCollapseAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconCollapseAllActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_IconCollapseAllActionPerformed
+
+    private void IconGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconGroupActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_IconGroupActionPerformed
+
+    private void IconUngroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconUngroupActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_IconUngroupActionPerformed
+
+    private void IconMoveDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconMoveDownActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_IconMoveDownActionPerformed
+
+    private void IconSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconSortActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_IconSortActionPerformed
+
+    
+    // Custom variable declaration
+    private javax.swing.JFileChooser fileChooser;
+    private Controller controlInterface;
+    private boolean dsmChanged;
+    private boolean clusterChanged;
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton IconCollapseAll;
     private javax.swing.JButton IconDelete;

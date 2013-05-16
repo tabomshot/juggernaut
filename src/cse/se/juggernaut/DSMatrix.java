@@ -15,7 +15,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * @author jaehwan
  */
 
-
 public class DSMatrix {
     
     private DefaultMutableTreeNode root;
