@@ -38,6 +38,10 @@ import javax.swing.tree.TreeNode;
 public class Controller {
     
     class RowHeaderRenderer extends JLabel implements ListCellRenderer {
+        
+        // TODO : flag on/off
+        private boolean showRowLabels;
+        
         RowHeaderRenderer(JTable table){
             JTableHeader header = table.getTableHeader();
             setOpaque(true);
@@ -50,7 +54,7 @@ public class Controller {
 
         @Override
         public Component getListCellRendererComponent(JList jlist, Object e, int i, boolean bln, boolean bln1) {
-            setText((e == null)?"":e.toString());
+            setText((e == null)?"":(new Integer(i)).toString() + " " + e.toString());
             return this;
         }
     }

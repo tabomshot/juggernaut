@@ -664,6 +664,7 @@ public class Interface extends javax.swing.JFrame {
         String str = JOptionPane.showInputDialog("Enter the number of rows:");
         int nrows = Integer.parseInt(str);
         if(controlInterface.newDSM(nrows)){
+            // TODO : enable DSM workicons
             /* test tree view */
             this.moduleTree = new JTree(controlInterface.getModel().getRoot());
             moduleTree.setVisible(true);
@@ -683,6 +684,7 @@ public class Interface extends javax.swing.JFrame {
         String str = JOptionPane.showInputDialog("Enter the number of rows:");
         int nrows = Integer.parseInt(str);
         if(controlInterface.newDSM(nrows)){
+            // TODO : enable DSM workicons
             /* test tree view */
             this.moduleTree = new JTree(controlInterface.getModel().getRoot());
             moduleTree.setVisible(true);
