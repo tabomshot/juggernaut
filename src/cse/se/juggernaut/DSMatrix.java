@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Enumeration; 
 import java.util.ListIterator;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
 
 /**
  *
@@ -19,29 +20,21 @@ public class DSMatrix {
     
     private DefaultMutableTreeNode root;
     
-    class Module {
-        private String name;
-        private ArrayList<String> depList;
-        private boolean expand;
-        
-        @Override
-        public String toString(){return name;}
-    }
-    
     public DSMatrix(){
-        DSMatrix.Module nroot = new DSMatrix.Module();
+        Module nroot = new Module();
         nroot.name = "$root";
         nroot.depList = new ArrayList<String>();
-        nroot.expand = false;
+        nroot.expand = true;
         
         this.root = new DefaultMutableTreeNode(nroot);
     }
    
     public void addNode(String name, ArrayList<String> depList)
     {
-        DSMatrix.Module toadd = new DSMatrix.Module();
+        Module toadd = new Module();
         toadd.name = name;
         toadd.depList = depList;
+        toadd.expand = false;
         
         root.add(new DefaultMutableTreeNode(toadd));
     }
@@ -51,7 +44,7 @@ public class DSMatrix {
         // rename module
         DefaultMutableTreeNode node = this.findNode(root, oldName);
         if(node!=null){
-            DSMatrix.Module module = (DSMatrix.Module)node.getUserObject();
+            Module module = (Module)node.getUserObject();
             module.name = newName;
             return true;
         }
@@ -60,7 +53,7 @@ public class DSMatrix {
         Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();
         while (e.hasMoreElements()) {
             node = e.nextElement();
-            DSMatrix.Module module = (DSMatrix.Module)node.getUserObject();
+            Module module = (Module)node.getUserObject();
             module.depList.remove(oldName);
             module.depList.add(newName);
         }
@@ -78,7 +71,7 @@ public class DSMatrix {
         Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode node = e.nextElement();
-            ((DSMatrix.Module)node.getUserObject()).depList.remove(name);
+            ((Module)node.getUserObject()).depList.remove(name);
         }
     }
     
@@ -197,14 +190,14 @@ public class DSMatrix {
         if(args!=null && args.length>0 ){
            
             // set group module
-            DSMatrix.Module nm = new DSMatrix.Module();
+            Module nm = new Module();
             nm.name = gname;
             nm.expand = false;
             nm.depList = new ArrayList<String>();
 
             // set group dependencies
             for(int i=0; i<args.length; i++){
-                ArrayList<String> dl = ((DSMatrix.Module)args[i].getUserObject()).depList;
+                ArrayList<String> dl = ((Module)args[i].getUserObject()).depList;
                 for(int j=0; j<dl.size(); j++){
                     if( nm.depList.size()>0 ){
                         if( !nm.depList.contains(dl.get(j)) ){
@@ -247,9 +240,9 @@ public class DSMatrix {
             moveNodeTo(parent, children);
             
             // set group dependencies
-            DSMatrix.Module pm = (DSMatrix.Module)parent.getUserObject();
+            Module pm = (Module)parent.getUserObject();
             for(int i=0; i<children.length; i++){
-                ArrayList<String> dl = ((DSMatrix.Module)children[i].getUserObject()).depList;
+                ArrayList<String> dl = ((Module)children[i].getUserObject()).depList;
                 for(int j=0; j<dl.size(); j++){
                     if( pm.depList.size()>0 ){
                         if( !pm.depList.contains(dl.get(j)) ){
@@ -269,12 +262,39 @@ public class DSMatrix {
     public void expandGroup(String name)
     {
         DefaultMutableTreeNode toexp = findNode(this.root, name);
-        ((DSMatrix.Module)toexp.getUserObject()).expand = true;
+        ((Module)toexp.getUserObject()).expand = true;
     }
     
     public void collapseGroup(String name)
     {
         DefaultMutableTreeNode toexp = findNode(this.root, name);
-        ((DSMatrix.Module)toexp.getUserObject()).expand = false;
+        ((Module)toexp.getUserObject()).expand = false;
+    }
+    
+    public ArrayList<String> getEntries(){
+        
+        ArrayList<String> res = new ArrayList();
+        
+        Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();
+        while(e.hasMoreElements()){
+            DefaultMutableTreeNode node = e.nextElement();
+            TreeNode[] path = node.getPath();
+            Object[] opath = node.getUserObjectPath();
+            for(int i=0; i<path.length; i++){
+                if( !path[i].isLeaf()  && !((Module)opath[i]).expand ){
+                    if(!res.contains(path[i].toString())){
+                        res.add(path[i].toString());
+                    }
+                    break;
+                } else if (path[i].isLeaf()) {
+                    if(!res.contains(path[i].toString())){
+                        res.add(path[i].toString());
+                    }
+                    break;
+                }
+            }
+        }
+
+        return res;
     }
 }

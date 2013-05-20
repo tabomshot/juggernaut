@@ -5,7 +5,18 @@
  */
 package cse.se.juggernaut;
 
+import java.awt.Component;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTree;
+import javax.swing.table.TableColumn;
 
 public class Interface extends javax.swing.JFrame {
 
@@ -20,7 +31,7 @@ public class Interface extends javax.swing.JFrame {
         this.fileChooser = new javax.swing.JFileChooser();
         this.controlInterface = new Controller();
         
-        System.out.println("Interface Initialized");
+        System.out.println("[DEBUG] Interface Initialized");
         
         initComponents();
     }
@@ -69,6 +80,7 @@ public class Interface extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         moduleTree = new javax.swing.JTree();
         jPanel2 = new javax.swing.JPanel();
+        tablePanel = new javax.swing.JScrollPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         MenuFile = new javax.swing.JMenu();
         ItemNewDSM = new javax.swing.JMenuItem();
@@ -384,10 +396,14 @@ public class Interface extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 790, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 790, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 546, Short.MAX_VALUE)
+            .addGap(0, 550, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE))
         );
 
         jSplitPane1.setRightComponent(jPanel2);
@@ -564,41 +580,77 @@ public class Interface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void IconRedrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconRedrawActionPerformed
-        // TODO add your handling code here:
-        System.out.println("IconRedraw has been clicked !");
+        // TODO Coloring!!!:
+        System.out.println("[DEBUG] IconRedraw has been clicked !");
+        
+        Object[][] obj = this.controlInterface.getTable();
+
+        ArrayList<String> en = this.controlInterface.getModel().getEntries();
+        DefaultListModel<String> lm = new DefaultListModel();
+        for(int i=0; i<en.size(); i++){
+            lm.addElement(en.get(i));
+        }
+        
+        String[] colheader = new String[en.size()];
+        for(int i=0; i<colheader.length; i++){
+            colheader[i] = (new Integer(i)).toString();
+        }
+        JTable table = new JTable(obj, colheader);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+        Enumeration<TableColumn> e = table.getColumnModel().getColumns();
+        while(e.hasMoreElements()){
+            TableColumn c = e.nextElement();
+            c.setPreferredWidth(25);
+        }
+        
+        JList rowHeader = new JList(lm);
+        rowHeader.setAutoscrolls(true);
+        rowHeader.setFixedCellHeight(table.getRowHeight()+table.getRowMargin());
+        rowHeader = this.controlInterface.setCellRenderer(rowHeader, table);
+        
+        tablePanel.setViewportView(table);
+        tablePanel.setRowHeaderView(rowHeader);
     }//GEN-LAST:event_IconRedrawActionPerformed
 
     private void ItemSaveDSMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemSaveDSMActionPerformed
         // TODO add your handling code here:
-        System.out.println("ItemSaveDSM has been clicked !");
+        System.out.println("[DEBUG] ItemSaveDSM has been clicked !");
     }//GEN-LAST:event_ItemSaveDSMActionPerformed
 
     private void ItemPropagationCostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemPropagationCostActionPerformed
-        // TODO add your handling code here:
+        // Will not be implemented
     }//GEN-LAST:event_ItemPropagationCostActionPerformed
 
     private void IconNewDSMRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconNewDSMRowActionPerformed
         // TODO add your handling code here:
-        System.out.println("IconNewDSMRow has been clicked !");
+        System.out.println("[DEBUG] IconNewDSMRow has been clicked !");
     }//GEN-LAST:event_IconNewDSMRowActionPerformed
 
     private void IconPartitionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconPartitionActionPerformed
         // TODO add your handling code here:
-        System.out.println("IconPartition has been clicked !");
+        System.out.println("[DEBUG] IconPartition has been clicked !");
     }//GEN-LAST:event_IconPartitionActionPerformed
 
     private void IconMoveUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconMoveUpActionPerformed
         // TODO add your handling code here:
-        System.out.println("ItemMoveUp has been clicked !");
+        System.out.println("[DEBUG] ItemMoveUp has been clicked !");
+        
     }//GEN-LAST:event_IconMoveUpActionPerformed
 
     private void ItemOpenDSMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemOpenDSMActionPerformed
-        System.out.println("ItemOpenDSM has been clicked !");
+        System.out.println("[DEBUG] ItemOpenDSM has been clicked !");
         
         int ret = fileChooser.showOpenDialog(this);
         if(ret == JFileChooser.APPROVE_OPTION){
             if(controlInterface.openDSM(fileChooser.getSelectedFile())){
                 // TODO : enable DSM workicons
+                /* test tree view */
+                this.moduleTree = new JTree(controlInterface.getModel().getRoot());
+                moduleTree.setVisible(true);
+                jScrollPane1.setViewportView(moduleTree);
+                
+                /* set icon enabled */
+                IconRedraw.setEnabled(true);
             } else {
                 // TODO : error
             }
@@ -607,21 +659,56 @@ public class Interface extends javax.swing.JFrame {
 
     private void ItemNewDSMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemNewDSMActionPerformed
         // TODO add your handling code here:
-        System.out.println("ItemNewDSM has been clicked !");
+        System.out.println("[DEBUG] ItemNewDSM has been clicked !");
+        
+        String str = JOptionPane.showInputDialog("Enter the number of rows:");
+        int nrows = Integer.parseInt(str);
+        if(controlInterface.newDSM(nrows)){
+            /* test tree view */
+            this.moduleTree = new JTree(controlInterface.getModel().getRoot());
+            moduleTree.setVisible(true);
+            jScrollPane1.setViewportView(moduleTree);
+            
+            /* set icon enabled */
+            IconRedraw.setEnabled(true);
+        } else {
+              JOptionPane.showMessageDialog(this, "Error creating new DSM", "New DSM Error" , JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_ItemNewDSMActionPerformed
 
     private void IconNewDSMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconNewDSMActionPerformed
         // TODO add your handling code here:
-        System.out.println("IconNewDSM has been clicked !");
+        System.out.println("[DEBUG] IconNewDSM has been clicked !");
+        
+        String str = JOptionPane.showInputDialog("Enter the number of rows:");
+        int nrows = Integer.parseInt(str);
+        if(controlInterface.newDSM(nrows)){
+            /* test tree view */
+            this.moduleTree = new JTree(controlInterface.getModel().getRoot());
+            moduleTree.setVisible(true);
+            jScrollPane1.setViewportView(moduleTree);
+            
+            /* set icon enabled */
+            IconRedraw.setEnabled(true);
+        } else {
+              JOptionPane.showMessageDialog(this, "Error creating new DSM", "New DSM Error" , JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_IconNewDSMActionPerformed
 
     private void IconOpenDSMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconOpenDSMActionPerformed
-        System.out.println("IconOpenDSM has been clicked !");
+        System.out.println("[DEBUG] IconOpenDSM has been clicked !");
         
         int ret = fileChooser.showOpenDialog(this);
         if(ret == JFileChooser.APPROVE_OPTION){
             if(controlInterface.openDSM(fileChooser.getSelectedFile())){
                 // TODO : enable DSM workicons
+                /* test tree view */
+                this.moduleTree = new JTree(controlInterface.getModel().getRoot());
+                moduleTree.setVisible(true);
+                jScrollPane1.setViewportView(moduleTree);
+                
+                /* set icon enabled */
+                IconRedraw.setEnabled(true);
             } else {
                 // TODO : error
             }
@@ -766,5 +853,6 @@ public class Interface extends javax.swing.JFrame {
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JToolBar jToolBar2;
     private javax.swing.JTree moduleTree;
+    private javax.swing.JScrollPane tablePanel;
     // End of variables declaration//GEN-END:variables
 }
