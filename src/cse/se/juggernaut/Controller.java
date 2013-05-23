@@ -21,11 +21,14 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListModel;
 import static javax.swing.SwingConstants.CENTER;
 import javax.swing.UIManager;
 import javax.swing.event.ListDataListener;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeExpansionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -140,10 +143,55 @@ public class Controller {
         return true;
     }
     
+    public JTree getTreeViewUpdate(){
+            
+        JTree tree = new JTree(this.getModel().getRoot());
+        
+        // tree expansion listener
+        tree.addTreeExpansionListener(new TreeExpansionListener() {
+
+            @Override
+            public void treeExpanded(TreeExpansionEvent tee) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) tee.getPath().getLastPathComponent();
+                Module module = (Module) node.getUserObject();
+                module.expand = true;
+            }
+
+            @Override
+            public void treeCollapsed(TreeExpansionEvent tee) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) tee.getPath().getLastPathComponent();
+                Module module = (Module) node.getUserObject();
+                module.expand = false;
+            }
+        });
+        
+        DefaultMutableTreeNode root = this.getModel().getRoot();
+        
+        if(((Module)root.getUserObject()).expand == false){
+            tree.collapseRow(0);
+        } else {
+            for(int i=1; i < tree.getRowCount(); i++){
+                //TODO: apply group expand property
+                DefaultMutableTreeNode node;
+                node = (DefaultMutableTreeNode) tree.getPathForRow(i).getLastPathComponent();
+                Module module = (Module) node.getUserObject();
+                //System.out.println("[DEBUG] M:"+tree.getPathForRow(i).toString() + "::expand["+module.expand+"]");
+                if(module.expand == true){
+                    tree.expandRow(i);
+                } else {
+                    tree.collapseRow(i);
+                }
+            }
+        }
+        
+        tree.setVisible(true);  
+        return tree;
+    }
+    
     public String[][] getTable() {
         
         // get valid entries
-        ArrayList<String> list = dsm.getEntries();
+        ArrayList<String> list = dsm.getTableEntry();
          
         for(int i=0; i<list.size(); i++){
             System.out.println("[DEBUG] entry ["+list.get(i)+"] is dependent to :");
@@ -155,7 +203,7 @@ public class Controller {
             System.out.println("");
         }
         
-        list = dsm.getEntries();
+        list = dsm.getTableEntry();
         for(int i=0; i<list.size(); i++){
             System.out.println("Entry : " + list.get(i));
         }
@@ -209,6 +257,33 @@ public class Controller {
         */
         
         return obj;
+    }
+    
+    public void setExpandAll(){
+        // expand root, expand groups
+        
+        ((Module)this.getModel().getRoot().getUserObject()).expand = true;
+        
+        Enumeration<DefaultMutableTreeNode> e = this.getModel().getRoot().depthFirstEnumeration();
+        while(e.hasMoreElements()){
+            DefaultMutableTreeNode node = e.nextElement();
+            if( !node.isLeaf() ){
+                ((Module)node.getUserObject()).expand = true;
+            }
+        }
+    }
+    
+    public void setCollapseAll(){
+        // collapse rot, collapse groups
+        ((Module)this.getModel().getRoot().getUserObject()).expand = false;
+        
+        Enumeration<DefaultMutableTreeNode> e = this.getModel().getRoot().depthFirstEnumeration();
+        while(e.hasMoreElements()){
+            DefaultMutableTreeNode node = e.nextElement();
+            if( !node.isLeaf() ){
+                ((Module)node.getUserObject()).expand = false;
+            }
+        }
     }
     
     public JList setCellRenderer(JList rowHeader, JTable table){

@@ -24,7 +24,7 @@ public class DSMatrix {
         Module nroot = new Module();
         nroot.name = "$root";
         nroot.depList = new ArrayList<String>();
-        nroot.expand = true;
+        nroot.expand = false;
         
         this.root = new DefaultMutableTreeNode(nroot);
     }
@@ -43,19 +43,20 @@ public class DSMatrix {
     {
         // rename module
         DefaultMutableTreeNode node = this.findNode(root, oldName);
-        if(node!=null){
-            Module module = (Module)node.getUserObject();
-            module.name = newName;
+        if(node!=null ){
+            ((Module)node.getUserObject()).name = newName;
+            
+            // rename module from dependency list
+            Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();
+            while (e.hasMoreElements()) {
+                node = e.nextElement();
+                if( ((Module)node.getUserObject()).depList.contains(oldName) ){
+                    ((Module)node.getUserObject()).depList.remove(oldName);
+                    ((Module)node.getUserObject()).depList.add(newName);
+                }
+            }
+            
             return true;
-        }
-        
-        // rename module from dependency list
-        Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();
-        while (e.hasMoreElements()) {
-            node = e.nextElement();
-            Module module = (Module)node.getUserObject();
-            module.depList.remove(oldName);
-            module.depList.add(newName);
         }
         
         return false;
@@ -229,6 +230,7 @@ public class DSMatrix {
             DefaultMutableTreeNode children[];
             children = new DefaultMutableTreeNode[groupToDel.getChildCount()];
             
+            System.out.println("[DEBUG] group : "+ groupToDel.toString() + "::" + groupToDel.getChildCount());
             DefaultMutableTreeNode tmp = (DefaultMutableTreeNode)groupToDel.getFirstChild();
             children[0] = tmp;
             for(int i=1; i<groupToDel.getChildCount(); i++){
@@ -271,7 +273,19 @@ public class DSMatrix {
         ((Module)toexp.getUserObject()).expand = false;
     }
     
-    public ArrayList<String> getEntries(){
+    public ArrayList<String> getTreeEntry(){
+        
+        ArrayList<String> res = new ArrayList();
+        
+        Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();
+        while(e.hasMoreElements()){
+            res.add(e.nextElement().toString());
+        }
+        
+        return res;
+    }
+    
+    public ArrayList<String> getTableEntry(){
         
         ArrayList<String> res = new ArrayList();
         

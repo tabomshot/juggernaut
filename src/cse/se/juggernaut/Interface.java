@@ -17,6 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.table.TableColumn;
+import javax.swing.tree.DefaultMutableTreeNode;
 
 public class Interface extends javax.swing.JFrame {
 
@@ -26,14 +27,57 @@ public class Interface extends javax.swing.JFrame {
      */
     public Interface() {
         
+        this.showRowLabels = true;
         this.dsmChanged = false;
         this.clusterChanged = false;
+        
         this.fileChooser = new javax.swing.JFileChooser();
         this.controlInterface = new Controller();
         
         System.out.println("[DEBUG] Interface Initialized");
         
         initComponents();
+    }
+    
+    private void setIconEnabled()
+    {
+        // menu-file
+        ItemSaveDSM.setEnabled(true);
+        ItemSaveDSMAs.setEnabled(true);
+        ItemNewClustering.setEnabled(true);
+        ItemLoadClustering.setEnabled(true);
+        ItemSaveClustering.setEnabled(true);
+        ItemSaveClusteringAs.setEnabled(true);
+        
+        // menu-view
+        ItemRedraw.setEnabled(true);
+        
+        // menu-toolbox
+        IconSaveDSM.setEnabled(true);
+        IconSaveDSMAs.setEnabled(true);
+        IconRedraw.setEnabled(true);
+        IconNewClustering.setEnabled(true);
+        IconLoadClustering.setEnabled(true);
+        IconSaveClustering.setEnabled(true);
+        IconSaveClusteringAs.setEnabled(true);
+        
+        // leftpanel-toolbox
+        IconNewDSMRow.setEnabled(true);
+        IconDelete.setEnabled(true);
+        IconSort.setEnabled(true);
+        IconExpandAll.setEnabled(true);
+        IconCollapseAll.setEnabled(true);
+        IconGroup.setEnabled(true);
+        IconUngroup.setEnabled(true);
+        IconMoveUp.setEnabled(true);
+        IconMoveDown.setEnabled(true);
+        IconRename.setEnabled(true);
+        IconPartition.setEnabled(true);
+    }
+    
+    private void setTreeViewUpdate(){
+        moduleTree = this.controlInterface.getTreeViewUpdate();
+        jScrollPane1.setViewportView(moduleTree);
     }
 
     /**
@@ -171,13 +215,20 @@ public class Interface extends javax.swing.JFrame {
 
         IconNewClustering.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/new-clsx.png"))); // NOI18N
         IconNewClustering.setToolTipText("New Clustering");
+        IconNewClustering.setEnabled(false);
         IconNewClustering.setFocusable(false);
         IconNewClustering.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         IconNewClustering.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        IconNewClustering.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IconNewClusteringActionPerformed(evt);
+            }
+        });
         jToolBar2.add(IconNewClustering);
 
         IconLoadClustering.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/open-clsx.png"))); // NOI18N
         IconLoadClustering.setToolTipText("Load CLustering");
+        IconLoadClustering.setEnabled(false);
         IconLoadClustering.setFocusable(false);
         IconLoadClustering.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         IconLoadClustering.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -452,6 +503,7 @@ public class Interface extends javax.swing.JFrame {
 
         ItemNewClustering.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/new-clsx.png"))); // NOI18N
         ItemNewClustering.setText("New Clustering");
+        ItemNewClustering.setEnabled(false);
         ItemNewClustering.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ItemNewClusteringActionPerformed(evt);
@@ -461,6 +513,7 @@ public class Interface extends javax.swing.JFrame {
 
         ItemLoadClustering.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/open-clsx.png"))); // NOI18N
         ItemLoadClustering.setText("Load Clustering ...");
+        ItemLoadClustering.setEnabled(false);
         ItemLoadClustering.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ItemLoadClusteringActionPerformed(evt);
@@ -531,6 +584,7 @@ public class Interface extends javax.swing.JFrame {
         MenuView.add(ItemFind);
         MenuView.add(jSeparator7);
 
+        ItemShowRowLabels.setSelected(true);
         ItemShowRowLabels.setText("Show Row Labels");
         ItemShowRowLabels.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -580,12 +634,11 @@ public class Interface extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void IconRedrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconRedrawActionPerformed
-        // TODO Coloring!!!:
-        System.out.println("[DEBUG] IconRedraw has been clicked !");
         
+        // TODO Coloring!!!:
         Object[][] obj = this.controlInterface.getTable();
 
-        ArrayList<String> en = this.controlInterface.getModel().getEntries();
+        ArrayList<String> en = this.controlInterface.getModel().getTableEntry();
         DefaultListModel<String> lm = new DefaultListModel();
         for(int i=0; i<en.size(); i++){
             lm.addElement(en.get(i));
@@ -596,6 +649,12 @@ public class Interface extends javax.swing.JFrame {
             colheader[i] = (new Integer(i)).toString();
         }
         JTable table = new JTable(obj, colheader);
+        
+        
+        /* coloring here */
+        table.getColumnModel().getColumn(0);
+        
+        
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         Enumeration<TableColumn> e = table.getColumnModel().getColumns();
         while(e.hasMoreElements()){
@@ -614,7 +673,6 @@ public class Interface extends javax.swing.JFrame {
 
     private void ItemSaveDSMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemSaveDSMActionPerformed
         // TODO add your handling code here:
-        System.out.println("[DEBUG] ItemSaveDSM has been clicked !");
     }//GEN-LAST:event_ItemSaveDSMActionPerformed
 
     private void ItemPropagationCostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemPropagationCostActionPerformed
@@ -622,35 +680,47 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_ItemPropagationCostActionPerformed
 
     private void IconNewDSMRowActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconNewDSMRowActionPerformed
-        // TODO add your handling code here:
-        System.out.println("[DEBUG] IconNewDSMRow has been clicked !");
+        
+        String str = JOptionPane.showInputDialog("Enter row name : \n");
+        if( !str.isEmpty() ){
+            this.controlInterface.getModel().addNode(str, new ArrayList());
+        }
+        
+        this.setTreeViewUpdate();
     }//GEN-LAST:event_IconNewDSMRowActionPerformed
 
     private void IconPartitionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconPartitionActionPerformed
         // TODO add your handling code here:
-        System.out.println("[DEBUG] IconPartition has been clicked !");
     }//GEN-LAST:event_IconPartitionActionPerformed
 
     private void IconMoveUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconMoveUpActionPerformed
-        // TODO add your handling code here:
-        System.out.println("[DEBUG] ItemMoveUp has been clicked !");
+
+        // TODO: test for multiple rows
         
+        int rows[] = moduleTree.getSelectionRows();
+        for(int i = 0; i<rows.length; i++){
+            DefaultMutableTreeNode node;
+            node = (DefaultMutableTreeNode) moduleTree.getPathForRow(rows[i]).getLastPathComponent();
+            if( !node.equals(this.controlInterface.getModel().getRoot()) ){
+                this.controlInterface.getModel().moveNodeUp(node.toString());
+            }
+        }
+        
+        this.setTreeViewUpdate();
     }//GEN-LAST:event_IconMoveUpActionPerformed
 
     private void ItemOpenDSMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemOpenDSMActionPerformed
-        System.out.println("[DEBUG] ItemOpenDSM has been clicked !");
         
         int ret = fileChooser.showOpenDialog(this);
         if(ret == JFileChooser.APPROVE_OPTION){
             if(controlInterface.openDSM(fileChooser.getSelectedFile())){
-                // TODO : enable DSM workicons
                 /* test tree view */
-                this.moduleTree = new JTree(controlInterface.getModel().getRoot());
-                moduleTree.setVisible(true);
-                jScrollPane1.setViewportView(moduleTree);
+                this.setTreeViewUpdate();
                 
                 /* set icon enabled */
-                IconRedraw.setEnabled(true);
+                this.setIconEnabled();
+                
+                //Item
             } else {
                 // TODO : error
             }
@@ -658,63 +728,29 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_ItemOpenDSMActionPerformed
 
     private void ItemNewDSMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemNewDSMActionPerformed
-        // TODO add your handling code here:
-        System.out.println("[DEBUG] ItemNewDSM has been clicked !");
         
         String str = JOptionPane.showInputDialog("Enter the number of rows:");
         int nrows = Integer.parseInt(str);
         if(controlInterface.newDSM(nrows)){
-            // TODO : enable DSM workicons
             /* test tree view */
-            this.moduleTree = new JTree(controlInterface.getModel().getRoot());
-            moduleTree.setVisible(true);
-            jScrollPane1.setViewportView(moduleTree);
+            this.setTreeViewUpdate();
             
             /* set icon enabled */
-            IconRedraw.setEnabled(true);
+            this.setIconEnabled();
+            
         } else {
               JOptionPane.showMessageDialog(this, "Error creating new DSM", "New DSM Error" , JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_ItemNewDSMActionPerformed
 
     private void IconNewDSMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconNewDSMActionPerformed
-        // TODO add your handling code here:
-        System.out.println("[DEBUG] IconNewDSM has been clicked !");
-        
-        String str = JOptionPane.showInputDialog("Enter the number of rows:");
-        int nrows = Integer.parseInt(str);
-        if(controlInterface.newDSM(nrows)){
-            // TODO : enable DSM workicons
-            /* test tree view */
-            this.moduleTree = new JTree(controlInterface.getModel().getRoot());
-            moduleTree.setVisible(true);
-            jScrollPane1.setViewportView(moduleTree);
-            
-            /* set icon enabled */
-            IconRedraw.setEnabled(true);
-        } else {
-              JOptionPane.showMessageDialog(this, "Error creating new DSM", "New DSM Error" , JOptionPane.ERROR_MESSAGE);
-        }
+
+        ItemNewDSMActionPerformed(evt);
     }//GEN-LAST:event_IconNewDSMActionPerformed
 
     private void IconOpenDSMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconOpenDSMActionPerformed
-        System.out.println("[DEBUG] IconOpenDSM has been clicked !");
-        
-        int ret = fileChooser.showOpenDialog(this);
-        if(ret == JFileChooser.APPROVE_OPTION){
-            if(controlInterface.openDSM(fileChooser.getSelectedFile())){
-                // TODO : enable DSM workicons
-                /* test tree view */
-                this.moduleTree = new JTree(controlInterface.getModel().getRoot());
-                moduleTree.setVisible(true);
-                jScrollPane1.setViewportView(moduleTree);
-                
-                /* set icon enabled */
-                IconRedraw.setEnabled(true);
-            } else {
-                // TODO : error
-            }
-        }
+
+        ItemOpenDSMActionPerformed(evt);
     }//GEN-LAST:event_IconOpenDSMActionPerformed
 
     private void ItemSaveDSMAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemSaveDSMAsActionPerformed
@@ -722,7 +758,18 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_ItemSaveDSMAsActionPerformed
 
     private void ItemNewClusteringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemNewClusteringActionPerformed
-        // TODO add your handling code here:
+        
+        /* TODO: ask save if there is any change */
+        
+        Enumeration<DefaultMutableTreeNode> e = this.controlInterface.getModel().getRoot().depthFirstEnumeration();
+        while(e.hasMoreElements()){
+            DefaultMutableTreeNode node = e.nextElement();
+            if( !node.isRoot() ){
+                if(!node.isLeaf()){
+                    this.controlInterface.getModel().ungroup(node.toString());
+                }
+            }
+        }
     }//GEN-LAST:event_ItemNewClusteringActionPerformed
 
     private void ItemLoadClusteringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemLoadClusteringActionPerformed
@@ -738,57 +785,146 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_ItemSaveClusteringAsActionPerformed
 
     private void ItemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemExitActionPerformed
-        // TODO add your handling code here:
+
+        System.exit(0);
     }//GEN-LAST:event_ItemExitActionPerformed
 
     private void ItemRedrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemRedrawActionPerformed
-        // TODO add your handling code here:
+
+        this.IconRedrawActionPerformed(evt);
     }//GEN-LAST:event_ItemRedrawActionPerformed
 
     private void ItemShowRowLabelsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemShowRowLabelsActionPerformed
-        // TODO add your handling code here:
+        this.showRowLabels = !(this.showRowLabels);
+        System.out.println("[DEBUG] show row labels checked : " + this.showRowLabels);
     }//GEN-LAST:event_ItemShowRowLabelsActionPerformed
 
     private void ItemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemAboutActionPerformed
-        // TODO add your handling code here:
+
+        JOptionPane.showMessageDialog(this, "Project Juggernaut\nChung-Ang University\n20101566 Jaehwan Lee\n20101502 Sujeong Kim");
     }//GEN-LAST:event_ItemAboutActionPerformed
 
     private void IconRenameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconRenameActionPerformed
-        // TODO add your handling code here:
+
+        // !!TODO: Test for group
+        
+        if(this.moduleTree.getSelectionCount() > 1){
+            // too many nodes
+        } else if(this.moduleTree.getSelectionCount()<1){
+            // no node
+        } else {
+            String newname = JOptionPane.showInputDialog("New name : ");
+            if( !newname.isEmpty() ){
+                int rows[] = this.moduleTree.getSelectionRows();
+                ArrayList<String> en = this.controlInterface.getModel().getTreeEntry();
+                String oldname = en.get(rows[0]-1);
+
+                this.controlInterface.getModel().renameNode(oldname, newname);
+            }
+        }
+        
+        this.setTreeViewUpdate();
     }//GEN-LAST:event_IconRenameActionPerformed
 
     private void IconDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconDeleteActionPerformed
-        // TODO add your handling code here:
+        
+        // !!TODO: Test for group
+        
+        DefaultMutableTreeNode root = this.controlInterface.getModel().getRoot();
+        ArrayList<String> en = this.controlInterface.getModel().getTreeEntry();
+        
+        int rows[] = this.moduleTree.getSelectionRows();
+        for(int i=0; i<rows.length; i++){
+            if(this.controlInterface.getModel().findNode(root, en.get(rows[i]-1)).isLeaf()){
+                this.controlInterface.getModel().deleteNode(en.get(rows[i]-1));
+            } else {
+                JOptionPane.showMessageDialog(this, "Ungroup node before delete!", "Deletion  error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        
+        this.setTreeViewUpdate();
     }//GEN-LAST:event_IconDeleteActionPerformed
 
     private void IconExpandAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconExpandAllActionPerformed
-        // TODO add your handling code here:
+
+        this.controlInterface.setExpandAll();
+        this.setTreeViewUpdate();
     }//GEN-LAST:event_IconExpandAllActionPerformed
 
     private void IconCollapseAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconCollapseAllActionPerformed
-        // TODO add your handling code here:
+
+        this.controlInterface.setCollapseAll();
+        this.setTreeViewUpdate();
     }//GEN-LAST:event_IconCollapseAllActionPerformed
 
     private void IconGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconGroupActionPerformed
-        // TODO add your handling code here:
+
+        DefaultMutableTreeNode root = this.controlInterface.getModel().getRoot();
+        ArrayList<String> en = this.controlInterface.getModel().getTreeEntry();
+        
+        if(this.moduleTree.getSelectionCount()>0){
+            int rows[] = this.moduleTree.getSelectionRows();
+            DefaultMutableTreeNode args[] = new DefaultMutableTreeNode[rows.length];
+            for(int i=0; i<rows.length; i++){
+                args[i] = this.controlInterface.getModel().findNode(root, en.get(rows[i]-1));
+            }
+            String str = JOptionPane.showInputDialog("Enter Group Name\n");
+            this.controlInterface.getModel().group(str, args);
+        }
+        
+        this.setTreeViewUpdate();
     }//GEN-LAST:event_IconGroupActionPerformed
 
     private void IconUngroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconUngroupActionPerformed
-        // TODO add your handling code here:
+
+        // TODO: test
+        DefaultMutableTreeNode root = this.controlInterface.getModel().getRoot();
+        ArrayList<String> en = this.controlInterface.getModel().getTreeEntry();
+        
+        System.out.println("@#$@#$ PATH : " + this.moduleTree.getSelectionPath().toString());
+        
+        if(this.moduleTree.getSelectionCount()>0){
+            int rows[] = this.moduleTree.getSelectionRows();
+            DefaultMutableTreeNode node = this.controlInterface.getModel().findNode(root, en.get(rows[0]-1));
+            if(!node.isRoot()){
+                this.controlInterface.getModel().ungroup(node.toString());
+            }
+        }
+        
+        this.setTreeViewUpdate();
     }//GEN-LAST:event_IconUngroupActionPerformed
 
     private void IconMoveDownActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconMoveDownActionPerformed
-        // TODO add your handling code here:
+        
+        // TODO: test for multiple rows
+        
+        int rows[] = moduleTree.getSelectionRows();
+        for(int i = 0; i<rows.length; i++){
+            DefaultMutableTreeNode node;
+            node = (DefaultMutableTreeNode) moduleTree.getPathForRow(rows[i]).getLastPathComponent();
+            if( !node.equals(this.controlInterface.getModel().getRoot()) ){
+                this.controlInterface.getModel().moveNodeDown(node.toString());
+            }
+        }
+        
+        this.setTreeViewUpdate();
     }//GEN-LAST:event_IconMoveDownActionPerformed
 
     private void IconSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconSortActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_IconSortActionPerformed
 
+    private void IconNewClusteringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconNewClusteringActionPerformed
+
+        this.ItemNewClusteringActionPerformed(evt);
+    }//GEN-LAST:event_IconNewClusteringActionPerformed
+
     
     // Custom variable declaration
     private javax.swing.JFileChooser fileChooser;
     private Controller controlInterface;
+    
+    private boolean showRowLabels;
     private boolean dsmChanged;
     private boolean clusterChanged;
     
