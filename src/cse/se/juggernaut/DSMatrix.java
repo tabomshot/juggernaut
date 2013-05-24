@@ -47,7 +47,7 @@ public class DSMatrix {
             ((Module)node.getUserObject()).name = newName;
             
             // rename module from dependency list
-            Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();
+            Enumeration<DefaultMutableTreeNode> e = root.preorderEnumeration();
             while (e.hasMoreElements()) {
                 node = e.nextElement();
                 if( ((Module)node.getUserObject()).depList.contains(oldName) ){
@@ -69,7 +69,7 @@ public class DSMatrix {
         todel.removeFromParent();
         
         // remove module dependencies
-        Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();
+        Enumeration<DefaultMutableTreeNode> e = root.preorderEnumeration();
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode node = e.nextElement();
             ((Module)node.getUserObject()).depList.remove(name);
@@ -164,7 +164,7 @@ public class DSMatrix {
     public DefaultMutableTreeNode findNode (DefaultMutableTreeNode root, String s) {
         
         // get node list
-        Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();
+        Enumeration<DefaultMutableTreeNode> e = root.preorderEnumeration();
         
         while (e.hasMoreElements()) {
             DefaultMutableTreeNode node = e.nextElement();
@@ -229,8 +229,7 @@ public class DSMatrix {
             // make children list
             DefaultMutableTreeNode children[];
             children = new DefaultMutableTreeNode[groupToDel.getChildCount()];
-            
-            System.out.println("[DEBUG] group : "+ groupToDel.toString() + "::" + groupToDel.getChildCount());
+
             DefaultMutableTreeNode tmp = (DefaultMutableTreeNode)groupToDel.getFirstChild();
             children[0] = tmp;
             for(int i=1; i<groupToDel.getChildCount(); i++){
@@ -277,9 +276,11 @@ public class DSMatrix {
         
         ArrayList<String> res = new ArrayList();
         
-        Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();
+        Enumeration<DefaultMutableTreeNode> e = root.breadthFirstEnumeration();
         while(e.hasMoreElements()){
-            res.add(e.nextElement().toString());
+            String entry = e.nextElement().toString();
+            System.out.println("Tree Entry " + entry);
+            res.add(entry);
         }
         
         return res;
@@ -289,7 +290,7 @@ public class DSMatrix {
         
         ArrayList<String> res = new ArrayList();
         
-        Enumeration<DefaultMutableTreeNode> e = root.depthFirstEnumeration();
+        Enumeration<DefaultMutableTreeNode> e = root.preorderEnumeration();
         while(e.hasMoreElements()){
             DefaultMutableTreeNode node = e.nextElement();
             TreeNode[] path = node.getPath();

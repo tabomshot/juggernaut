@@ -635,9 +635,6 @@ public class Interface extends javax.swing.JFrame {
 
     private void IconRedrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconRedrawActionPerformed
         
-        // TODO Coloring!!!:
-        Object[][] obj = this.controlInterface.getTable();
-
         ArrayList<String> en = this.controlInterface.getModel().getTableEntry();
         DefaultListModel<String> lm = new DefaultListModel();
         for(int i=0; i<en.size(); i++){
@@ -648,13 +645,12 @@ public class Interface extends javax.swing.JFrame {
         for(int i=0; i<colheader.length; i++){
             colheader[i] = (new Integer(i)).toString();
         }
-        JTable table = new JTable(obj, colheader);
         
+        // TODO Coloring!!!:
+        // get colored table
+        JTable table = this.controlInterface.getColoredTable();
         
-        /* coloring here */
-        table.getColumnModel().getColumn(0);
-        
-        
+        // set preference
         table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
         Enumeration<TableColumn> e = table.getColumnModel().getColumns();
         while(e.hasMoreElements()){
@@ -665,7 +661,7 @@ public class Interface extends javax.swing.JFrame {
         JList rowHeader = new JList(lm);
         rowHeader.setAutoscrolls(true);
         rowHeader.setFixedCellHeight(table.getRowHeight()+table.getRowMargin());
-        rowHeader = this.controlInterface.setCellRenderer(rowHeader, table);
+        rowHeader = this.controlInterface.setCellRenderer(rowHeader, table, this.showRowLabels);
         
         tablePanel.setViewportView(table);
         tablePanel.setRowHeaderView(rowHeader);
@@ -761,7 +757,7 @@ public class Interface extends javax.swing.JFrame {
         
         /* TODO: ask save if there is any change */
         
-        Enumeration<DefaultMutableTreeNode> e = this.controlInterface.getModel().getRoot().depthFirstEnumeration();
+        Enumeration<DefaultMutableTreeNode> e = this.controlInterface.getModel().getRoot().preorderEnumeration();
         while(e.hasMoreElements()){
             DefaultMutableTreeNode node = e.nextElement();
             if( !node.isRoot() ){
@@ -795,8 +791,8 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_ItemRedrawActionPerformed
 
     private void ItemShowRowLabelsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemShowRowLabelsActionPerformed
+        
         this.showRowLabels = !(this.showRowLabels);
-        System.out.println("[DEBUG] show row labels checked : " + this.showRowLabels);
     }//GEN-LAST:event_ItemShowRowLabelsActionPerformed
 
     private void ItemAboutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemAboutActionPerformed
@@ -866,7 +862,7 @@ public class Interface extends javax.swing.JFrame {
             int rows[] = this.moduleTree.getSelectionRows();
             DefaultMutableTreeNode args[] = new DefaultMutableTreeNode[rows.length];
             for(int i=0; i<rows.length; i++){
-                args[i] = this.controlInterface.getModel().findNode(root, en.get(rows[i]-1));
+                args[i] = this.controlInterface.getModel().findNode(root, en.get(rows[i]));
             }
             String str = JOptionPane.showInputDialog("Enter Group Name\n");
             this.controlInterface.getModel().group(str, args);

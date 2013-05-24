@@ -29,8 +29,10 @@ import javax.swing.UIManager;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
@@ -40,12 +42,13 @@ import javax.swing.tree.TreeNode;
  */
 public class Controller {
     
+    // row header renderer class
     class RowHeaderRenderer extends JLabel implements ListCellRenderer {
-        
-        // TODO : flag on/off
         private boolean showRowLabels;
         
-        RowHeaderRenderer(JTable table){
+        RowHeaderRenderer(JTable table, boolean showRowLabels){
+            this.showRowLabels = showRowLabels;
+            
             JTableHeader header = table.getTableHeader();
             setOpaque(true);
             setBorder(UIManager.getBorder("TableHeader.cellBorder"));
@@ -57,8 +60,34 @@ public class Controller {
 
         @Override
         public Component getListCellRendererComponent(JList jlist, Object e, int i, boolean bln, boolean bln1) {
-            setText((e == null)?"":(new Integer(i)).toString() + " " + e.toString());
+            if(showRowLabels){
+                setText((e == null)?"":(new Integer(i)).toString() + " " + e.toString());
+            } else {
+                setText((e == null)?"":(new Integer(i)).toString() );
+            }
+            
             return this;
+        }
+    }
+    
+    // table cell color renderer
+    public class CellColorRenderer extends DefaultTableCellRenderer {
+        private Color[][] cTable;
+        
+        public CellColorRenderer(Color[][] cTable){
+            this.cTable = cTable;
+            
+        }
+        
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column){
+            Component comp = super.getTableCellRendererComponent(table, value, hasFocus, hasFocus, row, column);            
+            
+            // render cell with use comp.setBackground(Color.XXX)
+            comp.setBackground(cTable[row][column]);
+            comp.setForeground(Color.BLACK);
+            
+            return comp;
         }
     }
     
@@ -259,6 +288,69 @@ public class Controller {
         return obj;
     }
     
+    public JTable getColoredTable(){
+        
+        // make table
+        Object[][] obj = this.getTable();
+        ArrayList<String> en = this.getModel().getTableEntry();
+        
+        String[] colheader = new String[en.size()];
+        for(int i=0; i<colheader.length; i++){
+            colheader[i] = (new Integer(i)).toString();
+        }
+        
+        JTable table = new JTable(obj, colheader);
+        
+        // Coloring here!
+        // generate group list
+        ArrayList<String> gl = new ArrayList();
+        Enumeration<DefaultMutableTreeNode> eg = this.getModel().getRoot().depthFirstEnumeration();
+        while(eg.hasMoreElements()){
+            DefaultMutableTreeNode node = eg.nextElement();
+            if(!node.isRoot() && !node.isLeaf()){
+                gl.add(node.toString());
+            }  
+        }
+        
+        // start set color from root
+        Color[] cList = { Color.CYAN, Color.GREEN, Color.MAGENTA, Color.ORANGE, Color.PINK, Color.RED, Color.YELLOW, Color.BLUE};
+        
+        Color[][] objColor = new Color[obj.length][obj.length];
+        for(int i=0; i<obj.length; i++){
+            for(int j=0; j<obj.length; j++){
+                objColor[i][j] = Color.WHITE;
+            }
+        }
+        
+        // set color every group
+        for(int i=0; i<gl.size(); i++){
+            DefaultMutableTreeNode group = this.getModel().findNode(this.getModel().getRoot(), gl.get(i));
+            Enumeration<DefaultMutableTreeNode> children = group.depthFirstEnumeration();
+            int low=100000000, high=0; // this looks seek
+            while(children.hasMoreElements()){
+                DefaultMutableTreeNode child = children.nextElement();
+                int index = en.indexOf(child.toString());
+                if(index > -1){
+                    if(index<low) low = index;
+                    if(index>high) high = index;
+                }
+            }
+            System.out.println("low:"+low+"::"+"high"+high);
+            for(int j=low; j<=high; j++){
+                for(int k=low; k<=high; k++){
+                    if(objColor[j][k].equals(Color.WHITE)){
+                        objColor[j][k] = cList[group.getPath().length % cList.length];
+                    }
+                }
+            }
+        }
+        
+        // set cell renderer
+        table.setDefaultRenderer(Object.class, new CellColorRenderer(objColor) );
+        
+        return table;
+    }
+    
     public void setExpandAll(){
         // expand root, expand groups
         
@@ -286,8 +378,8 @@ public class Controller {
         }
     }
     
-    public JList setCellRenderer(JList rowHeader, JTable table){
-        rowHeader.setCellRenderer(new RowHeaderRenderer(table));
+    public JList setCellRenderer(JList rowHeader, JTable table, boolean showRowLabels){
+        rowHeader.setCellRenderer(new RowHeaderRenderer(table, showRowLabels));
         return rowHeader;
     }
 }
