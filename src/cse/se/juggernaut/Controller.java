@@ -378,6 +378,30 @@ public class Controller {
         }
     }
     
+    public void sortEntry(){
+        
+        // get group list with root group
+        Enumeration<DefaultMutableTreeNode> eg = this.getModel().getRoot().depthFirstEnumeration();
+        while(eg.hasMoreElements()){
+            DefaultMutableTreeNode node = eg.nextElement();
+            if( !node.isLeaf() ){
+                // bubble sort children for each group
+                for(int i=node.getChildCount()-1; i>=0; i--){
+                    for(int j=0; j<i; j++){
+                        // (b compare to a) || (length)
+                        if( node.getChildAt(j).toString().length() > node.getChildAt(j+1).toString().length()){
+                            this.getModel().moveNodeDown(node.getChildAt(j).toString());
+                        } else if (node.getChildAt(j).toString().length() == node.getChildAt(j+1).toString().length()){
+                            if( node.getChildAt(j).toString().compareTo(node.getChildAt(j+1).toString()) > 0 ) {
+                                this.getModel().moveNodeDown(node.getChildAt(j).toString());
+                            }
+                        }
+                    }
+                }
+            }  
+        }
+    }
+    
     public JList setCellRenderer(JList rowHeader, JTable table, boolean showRowLabels){
         rowHeader.setCellRenderer(new RowHeaderRenderer(table, showRowLabels));
         return rowHeader;

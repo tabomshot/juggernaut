@@ -908,6 +908,8 @@ public class Interface extends javax.swing.JFrame {
 
     private void IconSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconSortActionPerformed
         // TODO add your handling code here:
+        this.controlInterface.sortEntry();
+        this.setTreeViewUpdate();
     }//GEN-LAST:event_IconSortActionPerformed
 
     private void IconNewClusteringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconNewClusteringActionPerformed
