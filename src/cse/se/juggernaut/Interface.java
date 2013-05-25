@@ -6,8 +6,11 @@
 package cse.se.juggernaut;
 
 import java.awt.Component;
+import java.io.File;
+import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.StringTokenizer;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -19,19 +22,82 @@ import javax.swing.JTree;
 import javax.swing.table.TableColumn;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+
+// for filechooser to filter file
+class DSMFileFilter extends javax.swing.filechooser.FileFilter {
+    @Override
+    public boolean accept(File file) {
+        if( file.isDirectory() ){
+            return true;
+        } else {
+            String ext = FileFilterUtils.getExtension(file);
+            if(ext.equalsIgnoreCase("dsm")){
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+    @Override
+    public String getDescription() {
+        return "DSM only";
+    }
+}
+class ClusterFileFilter extends javax.swing.filechooser.FileFilter {
+    @Override
+    public boolean accept(File file) {
+        if( file.isDirectory() ){
+            return true;
+        } else {
+            String ext = FileFilterUtils.getExtension(file);
+            if(ext.equalsIgnoreCase("clsx")){
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+    @Override
+    public String getDescription() {
+        return "CLSX only";
+    }
+}
+class FileFilterUtils {
+        static String getExtension(File f){
+            StringTokenizer token = new StringTokenizer(f.getName(), ".");
+            String tok = "";
+            if( token.countTokens() > 1){
+                while(token.hasMoreTokens()){
+                    tok = token.nextToken();
+                }
+            }
+            return tok;
+        }
+}
+
 public class Interface extends javax.swing.JFrame {
 
     /**
      * Creates new form Interface
      * Creates control interfaces
      */
+    
     public Interface() {
         
         this.showRowLabels = true;
         this.dsmChanged = false;
         this.clusterChanged = false;
         
-        this.fileChooser = new javax.swing.JFileChooser();
+        this.dsmFileChooser = new javax.swing.JFileChooser();
+        this.dsmFileChooser.setCurrentDirectory( new File( "./") );
+        this.dsmFileChooser.setFileFilter(new DSMFileFilter());
+        this.dsmFileOpened = false;
+        
+        this.clusterFileChooser = new javax.swing.JFileChooser();
+        this.clusterFileChooser.setFileFilter(new ClusterFileFilter());
+        this.clusterFileChooser.setCurrentDirectory( new File( "./") );
+        this.clusterFileOpened = false;
+        
         this.controlInterface = new Controller();
         
         System.out.println("[DEBUG] Interface Initialized");
@@ -668,7 +734,14 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_IconRedrawActionPerformed
 
     private void ItemSaveDSMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemSaveDSMActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here
+        // TODO: test append or renew
+        if(this.dsmFileOpened){
+            this.controlInterface.saveDSM(this.dsmFileChooser.getSelectedFile());
+        } else {
+            this.ItemSaveDSMAsActionPerformed(evt);
+        }
+        this.dsmChanged = false;
     }//GEN-LAST:event_ItemSaveDSMActionPerformed
 
     private void ItemPropagationCostActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemPropagationCostActionPerformed
@@ -682,11 +755,16 @@ public class Interface extends javax.swing.JFrame {
             this.controlInterface.getModel().addNode(str, new ArrayList());
         }
         
+        this.dsmChanged = true;
+        
         this.setTreeViewUpdate();
     }//GEN-LAST:event_IconNewDSMRowActionPerformed
 
     private void IconPartitionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconPartitionActionPerformed
         // TODO add your handling code here:
+        this.dsmChanged = true;
+        
+        this.setTreeViewUpdate();
     }//GEN-LAST:event_IconPartitionActionPerformed
 
     private void IconMoveUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconMoveUpActionPerformed
@@ -701,22 +779,39 @@ public class Interface extends javax.swing.JFrame {
                 this.controlInterface.getModel().moveNodeUp(node.toString());
             }
         }
+        this.dsmChanged = true;
         
         this.setTreeViewUpdate();
     }//GEN-LAST:event_IconMoveUpActionPerformed
 
     private void ItemOpenDSMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemOpenDSMActionPerformed
         
-        int ret = fileChooser.showOpenDialog(this);
+        // save dialog
+        if(this.dsmChanged){
+            switch(JOptionPane.showConfirmDialog(this, "DSM has been modified. Save changes?")){
+                case JOptionPane.OK_OPTION:
+                    this.ItemSaveDSMActionPerformed(evt);
+                    this.dsmChanged = false;
+                    break;
+                case JOptionPane.NO_OPTION:
+                    this.dsmChanged = false;
+                    break;
+                case JOptionPane.CANCEL_OPTION:
+                    return;
+            }
+        }
+        
+        int ret = dsmFileChooser.showOpenDialog(this);
         if(ret == JFileChooser.APPROVE_OPTION){
-            if(controlInterface.openDSM(fileChooser.getSelectedFile())){
+            if(controlInterface.openDSM(dsmFileChooser.getSelectedFile())){
                 /* test tree view */
                 this.setTreeViewUpdate();
                 
                 /* set icon enabled */
                 this.setIconEnabled();
                 
-                //Item
+                this.dsmFileOpened = true;
+                this.dsmChanged = false;
             } else {
                 // TODO : error
             }
@@ -724,6 +819,22 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_ItemOpenDSMActionPerformed
 
     private void ItemNewDSMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemNewDSMActionPerformed
+       
+        // save dialog
+        if(this.dsmChanged){
+            switch(JOptionPane.showConfirmDialog(this, "DSM has been modified. Save changes?")){
+                case JOptionPane.OK_OPTION:
+                    this.ItemSaveDSMActionPerformed(evt);
+                    this.dsmChanged = false;
+                    break;
+                case JOptionPane.NO_OPTION:
+                    this.dsmChanged = false;
+                    break;
+                case JOptionPane.CANCEL_OPTION:
+                    return;
+            }
+            
+        }
         
         String str = JOptionPane.showInputDialog("Enter the number of rows:");
         int nrows = Integer.parseInt(str);
@@ -734,6 +845,7 @@ public class Interface extends javax.swing.JFrame {
             /* set icon enabled */
             this.setIconEnabled();
             
+            this.dsmFileOpened = false;
         } else {
               JOptionPane.showMessageDialog(this, "Error creating new DSM", "New DSM Error" , JOptionPane.ERROR_MESSAGE);
         }
@@ -750,7 +862,10 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_IconOpenDSMActionPerformed
 
     private void ItemSaveDSMAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemSaveDSMAsActionPerformed
-        // TODO add your handling code here:
+
+        this.dsmFileChooser.showSaveDialog(this);
+        this.controlInterface.saveDSM(this.dsmFileChooser.getSelectedFile());
+        this.dsmChanged = false;
     }//GEN-LAST:event_ItemSaveDSMAsActionPerformed
 
     private void ItemNewClusteringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemNewClusteringActionPerformed
@@ -781,7 +896,21 @@ public class Interface extends javax.swing.JFrame {
     }//GEN-LAST:event_ItemSaveClusteringAsActionPerformed
 
     private void ItemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemExitActionPerformed
-
+        
+        if(this.dsmChanged){
+            switch(JOptionPane.showConfirmDialog(this, "DSM has been modified. Save changes?")){
+                case JOptionPane.OK_OPTION:
+                    this.ItemSaveDSMActionPerformed(evt);
+                    this.dsmChanged = false;
+                    break;
+                case JOptionPane.NO_OPTION:
+                    this.dsmChanged = false;
+                    break;
+                case JOptionPane.CANCEL_OPTION:
+                    return;
+            }
+        }
+        
         System.exit(0);
     }//GEN-LAST:event_ItemExitActionPerformed
 
@@ -818,6 +947,7 @@ public class Interface extends javax.swing.JFrame {
                 this.controlInterface.getModel().renameNode(oldname, newname);
             }
         }
+        this.dsmChanged = true;
         
         this.setTreeViewUpdate();
     }//GEN-LAST:event_IconRenameActionPerformed
@@ -837,6 +967,7 @@ public class Interface extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Ungroup node before delete!", "Deletion  error", JOptionPane.ERROR_MESSAGE);
             }
         }
+        this.dsmChanged = true;
         
         this.setTreeViewUpdate();
     }//GEN-LAST:event_IconDeleteActionPerformed
@@ -855,6 +986,7 @@ public class Interface extends javax.swing.JFrame {
 
     private void IconGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconGroupActionPerformed
 
+        /* detected bugs  */
         DefaultMutableTreeNode root = this.controlInterface.getModel().getRoot();
         ArrayList<String> en = this.controlInterface.getModel().getTreeEntry();
         
@@ -867,6 +999,7 @@ public class Interface extends javax.swing.JFrame {
             String str = JOptionPane.showInputDialog("Enter Group Name\n");
             this.controlInterface.getModel().group(str, args);
         }
+        this.clusterChanged = true;
         
         this.setTreeViewUpdate();
     }//GEN-LAST:event_IconGroupActionPerformed
@@ -886,6 +1019,7 @@ public class Interface extends javax.swing.JFrame {
                 this.controlInterface.getModel().ungroup(node.toString());
             }
         }
+        this.clusterChanged = true;
         
         this.setTreeViewUpdate();
     }//GEN-LAST:event_IconUngroupActionPerformed
@@ -902,6 +1036,7 @@ public class Interface extends javax.swing.JFrame {
                 this.controlInterface.getModel().moveNodeDown(node.toString());
             }
         }
+        this.dsmChanged = true;
         
         this.setTreeViewUpdate();
     }//GEN-LAST:event_IconMoveDownActionPerformed
@@ -909,6 +1044,7 @@ public class Interface extends javax.swing.JFrame {
     private void IconSortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconSortActionPerformed
         // TODO add your handling code here:
         this.controlInterface.sortEntry();
+        this.dsmChanged = true;
         this.setTreeViewUpdate();
     }//GEN-LAST:event_IconSortActionPerformed
 
@@ -919,11 +1055,14 @@ public class Interface extends javax.swing.JFrame {
 
     
     // Custom variable declaration
-    private javax.swing.JFileChooser fileChooser;
+    private javax.swing.JFileChooser dsmFileChooser;
+    private javax.swing.JFileChooser clusterFileChooser;
     private Controller controlInterface;
     
     private boolean showRowLabels;
+    private boolean dsmFileOpened;
     private boolean dsmChanged;
+    private boolean clusterFileOpened;
     private boolean clusterChanged;
     
     

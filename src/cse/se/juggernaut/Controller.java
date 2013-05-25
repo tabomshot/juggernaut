@@ -8,9 +8,11 @@ package cse.se.juggernaut;
 import java.awt.Color;
 import java.awt.Component;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -170,6 +172,55 @@ public class Controller {
         }
 
         return true;
+    }
+    
+    public void saveDSM(File file)
+    {
+        System.out.println("file : "+ file.toString());
+        ArrayList<String> el = new ArrayList();
+        Enumeration<DefaultMutableTreeNode> entry = this.getModel().getRoot().preorderEnumeration();
+        while(entry.hasMoreElements()){
+            DefaultMutableTreeNode node = entry.nextElement();
+            if(node.isLeaf()){
+                el.add(node.toString());
+            }
+        }
+        
+        FileWriter fw;
+        try {
+            fw = new FileWriter(file);
+            fw.write(el.size()+"\n");
+            
+            // for every entry module, write dependency table
+            for(int i=0; i<el.size(); i++){
+                
+                // create dependency table
+                int deplist[] = new int[el.size()];
+                for(int j=0; j<el.size(); j++){
+                    deplist[j] = 0;
+                }
+                DefaultMutableTreeNode node = this.getModel().findNode(this.getModel().getRoot(), el.get(i));
+                Module module = (Module) node.getUserObject();
+                for(int j=0; j<module.depList.size(); j++){
+                    deplist[ el.indexOf(module.depList.get(j)) ] = 1;
+                }
+                
+                // write line
+                for(int j=0; j<el.size(); j++){
+                    fw.write(deplist[j] + " ");
+                }
+                fw.write("\n");
+            }
+            
+            // write entry list
+            for(int i=0; i<el.size(); i++){
+                fw.write(el.get(i) + "\n");
+            }
+            
+            fw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public JTree getTreeViewUpdate(){
