@@ -1,0 +1,102 @@
+<cluster>
+<group name="$root">
+<group name="caelus">
+<item name="edu.drexel.cs.rise.caelus.CaelusException" />
+<item name="edu.drexel.cs.rise.caelus.SimpleListModel" />
+<item name="edu.drexel.cs.rise.caelus.SwingUtilities" />
+<item name="edu.drexel.cs.rise.caelus.TextAreaOutputStream" />
+</group>
+<group name="dr">
+<item name="edu.drexel.cs.rise.moka.UsageInfo" />
+<item name="edu.drexel.cs.rise.moka.MokaException" />
+<item name="edu.drexel.cs.rise.io.CountingInputStream" />
+</group>
+<group name="base_model">
+<item name="edu.drexel.cs.rise.moka.model.Accessible" />
+<item name="edu.drexel.cs.rise.moka.model.Attribute" />
+<item name="edu.drexel.cs.rise.moka.model.MethodInfo" />
+<item name="edu.drexel.cs.rise.moka.model.FieldInfo" />
+<item name="edu.drexel.cs.rise.moka.model.NestedAttribute" />
+<item name="edu.drexel.cs.rise.moka.model.ClassInfo" />
+</group>
+<group name="jre14_model">
+<item name="edu.drexel.cs.rise.moka.jre14.model.MethodInfo" />
+<item name="edu.drexel.cs.rise.moka.jre14.model.FieldInfo" />
+<item name="edu.drexel.cs.rise.moka.jre14.model.ClassInfo" />
+</group>
+<group name="jre16_model">
+<item name="edu.drexel.cs.rise.moka.jre16.model.MethodInfo" />
+<item name="edu.drexel.cs.rise.moka.jre16.model.FieldInfo" />
+<item name="edu.drexel.cs.rise.moka.jre16.model.ClassInfo" />
+</group>
+<group name="model_attr">
+<item name="edu.drexel.cs.rise.moka.model.attr.ExceptionAttr" />
+<item name="edu.drexel.cs.rise.moka.model.attr.EnclosingMethodAttr" />
+<item name="edu.drexel.cs.rise.moka.model.attr.CodeAttr" />
+</group>
+<group name="const_pool">
+<item name="edu.drexel.cs.rise.moka.parser.StringEntry" />
+<item name="edu.drexel.cs.rise.moka.parser.ReferenceEntry" />
+<item name="edu.drexel.cs.rise.moka.parser.LongEntry" />
+<item name="edu.drexel.cs.rise.moka.parser.IntegerEntry" />
+<item name="edu.drexel.cs.rise.moka.parser.FloatEntry" />
+<item name="edu.drexel.cs.rise.moka.parser.DoubleEntry" />
+</group>
+<group name="parse_exception">
+<item name="edu.drexel.cs.rise.moka.parser.Context" />
+<item name="edu.drexel.cs.rise.moka.parser.ParseException" />
+</group>
+<group name="base_parser">
+<item name="edu.drexel.cs.rise.moka.parser.attr.AbstractAttributeParser" />
+<item name="edu.drexel.cs.rise.moka.parser.AttributeParser" />
+<item name="edu.drexel.cs.rise.moka.parser.FieldParser" />
+<item name="edu.drexel.cs.rise.moka.parser.MethodParser" />
+<item name="edu.drexel.cs.rise.moka.parser.AbstractClassParser$EntryBuilder" />
+<item name="edu.drexel.cs.rise.moka.parser.AbstractClassParser" />
+</group>
+<group name="code_parser">
+<item name="edu.drexel.cs.rise.moka.parser.attr.Instructions$SimpleInstruction" />
+<item name="edu.drexel.cs.rise.moka.parser.attr.Instructions$Instruction" />
+<item name="edu.drexel.cs.rise.moka.parser.attr.Instructions" />
+<item name="edu.drexel.cs.rise.moka.parser.attr.CodeParser" />
+</group>
+<group name="paser_attr_rest">
+<item name="edu.drexel.cs.rise.moka.parser.attr.ExceptionParser" />
+<item name="edu.drexel.cs.rise.moka.parser.attr.EnclosingMethodParser" />
+</group>
+<group name="jre16_parser">
+<item name="edu.drexel.cs.rise.moka.jre16.parser.MethodParser" />
+<item name="edu.drexel.cs.rise.moka.jre16.parser.FieldParser" />
+<item name="edu.drexel.cs.rise.moka.jre16.parser.ClassParser" />
+<item name="edu.drexel.cs.rise.moka.jre16.parser.AttributeParser" />
+</group>
+<group name="jre14_parser">
+<item name="edu.drexel.cs.rise.moka.jre14.parser.MethodParser" />
+<item name="edu.drexel.cs.rise.moka.jre14.parser.FieldParser" />
+<item name="edu.drexel.cs.rise.moka.jre14.parser.ClassParser" />
+<item name="edu.drexel.cs.rise.moka.jre14.parser.AttributeParser" />
+</group>
+<group name="version_parser">
+<item name="edu.drexel.cs.rise.moka.parser.ClassParser" />
+</group>
+<group name="base_export">
+<item name="edu.drexel.cs.rise.moka.xml.AttributeWriter" />
+<item name="edu.drexel.cs.rise.moka.xml.ClassWriter" />
+<item name="edu.drexel.cs.rise.moka.xml.FieldWriter" />
+<item name="edu.drexel.cs.rise.moka.xml.MethodWriter" />
+<item name="edu.drexel.cs.rise.moka.xml.attr.AbstractAttributeWriter" />
+</group>
+<group name="export_attr">
+<item name="edu.drexel.cs.rise.moka.xml.attr.ExceptionWriter" />
+<item name="edu.drexel.cs.rise.moka.xml.attr.EnclosingMethodWriter" />
+<item name="edu.drexel.cs.rise.moka.xml.attr.CodeWriter" />
+</group>
+<group name="console">
+<item name="edu.drexel.cs.rise.moka.Extract" />
+</group>
+<group name="ui">
+<item name="edu.drexel.cs.rise.moka.ui.Launcher" />
+<item name="edu.drexel.cs.rise.moka.ui.Progress" />
+</group>
+</group>
+</cluster>

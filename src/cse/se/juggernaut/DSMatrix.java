@@ -165,13 +165,15 @@ public class DSMatrix {
         
         // get node list
         Enumeration<DefaultMutableTreeNode> e = root.preorderEnumeration();
-        
-        while (e.hasMoreElements()) {
-            DefaultMutableTreeNode node = e.nextElement();
-            if (node.toString().equalsIgnoreCase(s)) {
-                return node;
+        if(s != null){
+            while (e.hasMoreElements()) {
+                DefaultMutableTreeNode node = e.nextElement();
+                if (node.toString().equalsIgnoreCase(s)) {
+                    return node;
+                }
             }
         }
+        
         return null;
     }
     

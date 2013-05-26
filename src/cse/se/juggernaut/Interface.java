@@ -5,20 +5,15 @@
  */
 package cse.se.juggernaut;
 
-import java.awt.Component;
 import java.io.File;
-import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTree;
 import javax.swing.table.TableColumn;
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -940,6 +935,8 @@ public class Interface extends javax.swing.JFrame {
                 // TODO : error
             }
         }
+        
+        this.setTreeViewUpdate();
     }//GEN-LAST:event_ItemLoadClusteringActionPerformed
 
     private void ItemSaveClusteringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemSaveClusteringActionPerformed

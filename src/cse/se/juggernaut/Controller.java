@@ -8,7 +8,6 @@ package cse.se.juggernaut;
 import java.awt.Color;
 import java.awt.Component;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -18,23 +17,16 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultListModel;
 import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTree;
 import javax.swing.ListCellRenderer;
-import javax.swing.ListModel;
-import static javax.swing.SwingConstants.CENTER;
 import javax.swing.UIManager;
-import javax.swing.event.ListDataListener;
 import javax.swing.event.TreeExpansionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.table.TableColumn;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
 
@@ -236,7 +228,27 @@ public class Controller {
     }
     
     public boolean openClustering(File file){
-        
+        try {
+            // parse xml, make tree
+            DefaultMutableTreeNode res = Parser.parse(file);
+            
+            // apply group entry from bottom
+            Enumeration<DefaultMutableTreeNode> e = res.postorderEnumeration();
+            while(e.hasMoreElements()){
+                DefaultMutableTreeNode node = e.nextElement();
+                if(!node.isRoot() && !node.isLeaf()){
+                    String gname = node.toString() + "  "; // sort of tricky
+                    DefaultMutableTreeNode args[] = new DefaultMutableTreeNode[node.getChildCount()];
+                    for(int i=0; i<node.getChildCount(); i++){
+                        args[i] = this.getModel().findNode(this.getModel().getRoot(), node.getChildAt(i).toString());
+                    }
+                    this.getModel().group(gname, args);
+                }
+            }
+            
+        } catch (Exception ex) {
+            Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return false;
     }
     
@@ -272,11 +284,13 @@ public class Controller {
             tree.collapseRow(0);
         } else {
             for(int i=1; i < tree.getRowCount(); i++){
-                //TODO: apply group expand property
+                
                 DefaultMutableTreeNode node;
                 node = (DefaultMutableTreeNode) tree.getPathForRow(i).getLastPathComponent();
                 Module module = (Module) node.getUserObject();
                 //System.out.println("[DEBUG] M:"+tree.getPathForRow(i).toString() + "::expand["+module.expand+"]");
+                
+                // apply group expand property
                 if(module.expand == true){
                     tree.expandRow(i);
                 } else {
@@ -346,17 +360,7 @@ public class Controller {
                 }
             }
         }
- 
-        /*
-        System.out.println("====== [DEBUG] =====");
-        for(int i=0; i<obj.length; i++){
-            for(int j=0; j<obj.length; j++){
-                System.out.print(obj[i][j] + " ");
-            }
-            System.out.println(" ");
-        }
-        */
-        
+
         return obj;
     }
     
@@ -372,9 +376,8 @@ public class Controller {
         }
         
         JTable table = new JTable(obj, colheader);
-        
-        // Coloring here!
-        // generate group list
+
+        // Coloring here, generate group list
         ArrayList<String> gl = new ArrayList();
         Enumeration<DefaultMutableTreeNode> eg = this.getModel().getRoot().depthFirstEnumeration();
         while(eg.hasMoreElements()){
@@ -385,7 +388,7 @@ public class Controller {
         }
         
         // start set color from root
-        Color[] cList = { Color.CYAN, Color.GREEN, Color.MAGENTA, Color.ORANGE, Color.PINK, Color.RED, Color.YELLOW, Color.BLUE};
+        Color[] cList = { Color.BLUE, Color.YELLOW, Color.GREEN, Color.ORANGE, Color.MAGENTA, Color.CYAN, Color.PINK, Color.RED };
         
         Color[][] objColor = new Color[obj.length][obj.length];
         for(int i=0; i<obj.length; i++){

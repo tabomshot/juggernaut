@@ -1,0 +1,77 @@
+<cluster xmlns="http://rise.cs.drexel.edu/minos/clsx">
+<group name="root">
+<group name="edu.drexel.cs.rise.titan.Project">
+<group name="edu.drexel.cs.rise.titan.Project">
+<group name="edu.drexel.cs.rise.titan.ui.MatrixViewer">
+<group name="edu.drexel.cs.rise.titan.ui.TableCell">
+<item name="edu.drexel.cs.rise.titan.model.MatrixModel" />
+<item name="edu.drexel.cs.rise.titan.ui.TableCell" />
+</group>
+<group name="edu.drexel.cs.rise.titan.action.FileAction">
+<item name="edu.drexel.cs.rise.titan.action.FileAction" />
+<item name="edu.drexel.cs.rise.titan.action.ExportMatrixAction" />
+<item name="edu.drexel.cs.rise.titan.action.ExportExcelAction" />
+</group>
+<group name="edu.drexel.cs.rise.titan.ui.MatrixViewer">
+<item name="edu.drexel.cs.rise.titan.ui.MatrixViewer$Listener" />
+<item name="edu.drexel.cs.rise.titan.ui.MatrixViewer" />
+<item name="edu.drexel.cs.rise.titan.ui.RowHeader" />
+</group>
+</group>
+<group name="edu.drexel.cs.rise.titan.Project">
+<group name="edu.drexel.cs.rise.titan.ui.ClusterViewer">
+<item name="edu.drexel.cs.rise.titan.ui.ClusterViewer" />
+<item name="edu.drexel.cs.rise.titan.action.cluster.DownAction" />
+<item name="edu.drexel.cs.rise.titan.action.cluster.DeleteAction" />
+<item name="edu.drexel.cs.rise.titan.action.cluster.SortAction" />
+<item name="edu.drexel.cs.rise.titan.action.cluster.UpAction" />
+</group>
+<group name="edu.drexel.cs.rise.titan.ui.ClusterViewer$Listener">
+<item name="edu.drexel.cs.rise.titan.ProjectListener" />
+<item name="edu.drexel.cs.rise.titan.ui.ClusterViewer$Listener" />
+</group>
+<group name="edu.drexel.cs.rise.titan.Project">
+<item name="edu.drexel.cs.rise.titan.Project" />
+<item name="edu.drexel.cs.rise.titan.action.RedrawAction" />
+</group>
+</group>
+</group>
+<group name="edu.drexel.cs.rise.titan.util.IconFactory">
+<group name="edu.drexel.cs.rise.titan.Viewer">
+<group name="edu.drexel.cs.rise.titan.Viewer">
+<item name="edu.drexel.cs.rise.titan.action.AboutAction" />
+<item name="edu.drexel.cs.rise.titan.action.RowLabelAction" />
+<item name="edu.drexel.cs.rise.titan.Viewer" />
+<item name="edu.drexel.cs.rise.titan.action.DependencyStrengthAction" />
+</group>
+<group name="edu.drexel.cs.rise.titan.util.ActionUtilities">
+<item name="edu.drexel.cs.rise.titan.action.cluster.LoadAction" />
+<item name="edu.drexel.cs.rise.titan.action.OpenMatrixAction" />
+<item name="edu.drexel.cs.rise.titan.util.ActionUtilities" />
+</group>
+<group name="edu.drexel.cs.rise.titan.action.cluster.SaveAsAction">
+<item name="edu.drexel.cs.rise.titan.action.cluster.SaveAction" />
+<item name="edu.drexel.cs.rise.titan.action.cluster.SaveAsAction" />
+</group>
+</group>
+<group name="edu.drexel.cs.rise.titan.util.IconFactory">
+<group name="edu.drexel.cs.rise.titan.model.ClusterModel">
+<item name="edu.drexel.cs.rise.titan.action.cluster.UngroupAction" />
+<item name="edu.drexel.cs.rise.titan.model.ClusterModel" />
+<item name="edu.drexel.cs.rise.titan.action.cluster.RenameAction" />
+</group>
+<group name="edu.drexel.cs.rise.titan.util.IconFactory">
+<item name="edu.drexel.cs.rise.titan.action.cluster.ExpandAllAction" />
+<item name="edu.drexel.cs.rise.titan.util.IconFactory" />
+<item name="edu.drexel.cs.rise.titan.action.cluster.CollapseAllAction" />
+</group>
+<group name="edu.drexel.cs.rise.titan.util.ClusterUtilities">
+<item name="edu.drexel.cs.rise.titan.action.cluster.GroupAction" />
+<item name="edu.drexel.cs.rise.titan.action.cluster.NewAction" />
+<item name="edu.drexel.cs.rise.titan.util.ClusterUtilities" />
+</group>
+</group>
+</group>
+</group>
+</group>
+</cluster>

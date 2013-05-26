@@ -1,0 +1,142 @@
+<cluster xmlns="http://rise.cs.drexel.edu/minos/clsx">
+<group name="root">
+<group name="L0">
+<group name="edu.drexel.cs.rise.moka.model.Attribute">
+<item name="edu.drexel.cs.rise.moka.model.Attribute" />
+</group>
+<group name="edu.drexel.cs.rise.moka.MokaException">
+<item name="edu.drexel.cs.rise.moka.MokaException" />
+</group>
+<group name="edu.drexel.cs.rise.moka.xml.attr.AbstractAttributeWriter">
+<item name="edu.drexel.cs.rise.moka.xml.attr.AbstractAttributeWriter" />
+</group>
+<group name="edu.drexel.cs.rise.moka.parser.Entry">
+<item name="edu.drexel.cs.rise.moka.parser.Entry" />
+</group>
+</group>
+<group name="L1">
+<group name="edu.drexel.cs.rise.moka.parser.Context">
+<item name="edu.drexel.cs.rise.moka.parser.ParseException" />
+<item name="edu.drexel.cs.rise.moka.parser.attr.AbstractAttributeParser" />
+<item name="edu.drexel.cs.rise.moka.parser.AttributeParser" />
+<item name="edu.drexel.cs.rise.moka.parser.Context" />
+<item name="edu.drexel.cs.rise.moka.parser.ReferenceEntry" />
+<item name="edu.drexel.cs.rise.moka.model.Accessible" />
+<item name="edu.drexel.cs.rise.moka.parser.TypeUtilities" />
+<item name="edu.drexel.cs.rise.moka.parser.IntegerEntry" />
+<item name="edu.drexel.cs.rise.moka.parser.EnclosedType" />
+</group>
+<group name="edu.drexel.cs.rise.moka.model.attr.CodeAttr">
+<item name="edu.drexel.cs.rise.moka.model.NestedAttribute" />
+<item name="edu.drexel.cs.rise.moka.model.attr.CodeAttr" />
+</group>
+<group name="_edu.drexel.cs.rise.moka.model.Attribute">
+<item name="edu.drexel.cs.rise.moka.model.attr.ExceptionAttr" />
+<item name="edu.drexel.cs.rise.moka.model.attr.EnclosingMethodAttr" />
+</group>
+</group>
+<group name="L2">
+<group name="edu.drexel.cs.rise.moka.parser.attr.ExceptionParser">
+<item name="edu.drexel.cs.rise.moka.parser.attr.ExceptionParser" />
+</group>
+<group name="edu.drexel.cs.rise.moka.xml.attr.EnclosingMethodWriter">
+<item name="edu.drexel.cs.rise.moka.xml.attr.EnclosingMethodWriter" />
+</group>
+<group name="_edu.drexel.cs.rise.moka.parser.Entry">
+<item name="edu.drexel.cs.rise.moka.parser.StringEntry" />
+<item name="edu.drexel.cs.rise.moka.parser.LongEntry" />
+<item name="edu.drexel.cs.rise.moka.parser.FloatEntry" />
+<item name="edu.drexel.cs.rise.moka.parser.DoubleEntry" />
+</group>
+<group name="edu.drexel.cs.rise.moka.xml.attr.CodeWriter">
+<item name="edu.drexel.cs.rise.moka.xml.attr.CodeWriter" />
+</group>
+<group name="edu.drexel.cs.rise.moka.ui.Launcher">
+<group name="L0">
+<group name="edu.drexel.cs.rise.caelus.SimpleListModel">
+<item name="edu.drexel.cs.rise.caelus.SimpleListModel" />
+</group>
+<group name="edu.drexel.cs.rise.moka.jre14.parser.ClassParser">
+<group name="L0">
+<group name="edu.drexel.cs.rise.moka.model.ClassInfo">
+<item name="edu.drexel.cs.rise.moka.model.FieldInfo" />
+<item name="edu.drexel.cs.rise.moka.model.MethodInfo" />
+<item name="edu.drexel.cs.rise.moka.model.ClassInfo" />
+</group>
+</group>
+<group name="L1">
+<group name="edu.drexel.cs.rise.moka.UsageInfo">
+<item name="edu.drexel.cs.rise.moka.UsageInfo" />
+</group>
+<group name="edu.drexel.cs.rise.moka.xml.ClassWriter">
+<item name="edu.drexel.cs.rise.moka.xml.FieldWriter" />
+<item name="edu.drexel.cs.rise.moka.xml.MethodWriter" />
+<item name="edu.drexel.cs.rise.moka.xml.ClassWriter" />
+<item name="edu.drexel.cs.rise.moka.xml.AttributeWriter" />
+</group>
+<group name="edu.drexel.cs.rise.moka.jre16.parser.ClassParser">
+<group name="L0">
+<group name="edu.drexel.cs.rise.moka.parser.AbstractClassParser">
+<item name="edu.drexel.cs.rise.moka.parser.FieldParser" />
+<item name="edu.drexel.cs.rise.moka.parser.MethodParser" />
+<item name="edu.drexel.cs.rise.moka.parser.AbstractClassParser$EntryBuilder" />
+<item name="edu.drexel.cs.rise.moka.parser.AbstractClassParser" />
+</group>
+</group>
+<group name="L1">
+<group name="edu.drexel.cs.rise.moka.jre14.parser.ClassParser">
+<item name="edu.drexel.cs.rise.moka.jre14.parser.ClassParser" />
+<item name="edu.drexel.cs.rise.moka.jre14.model.FieldInfo" />
+<item name="edu.drexel.cs.rise.moka.jre14.model.ClassInfo" />
+<item name="edu.drexel.cs.rise.moka.jre14.model.MethodInfo" />
+<item name="edu.drexel.cs.rise.moka.jre14.parser.MethodParser" />
+<item name="edu.drexel.cs.rise.moka.jre14.parser.AttributeParser" />
+<item name="edu.drexel.cs.rise.moka.jre14.parser.FieldParser" />
+</group>
+<group name="edu.drexel.cs.rise.moka.jre16.parser.ClassParser">
+<item name="edu.drexel.cs.rise.moka.jre16.model.FieldInfo" />
+<item name="edu.drexel.cs.rise.moka.jre16.model.ClassInfo" />
+<item name="edu.drexel.cs.rise.moka.jre16.parser.AttributeParser" />
+<item name="edu.drexel.cs.rise.moka.jre16.parser.MethodParser" />
+<item name="edu.drexel.cs.rise.moka.jre16.parser.FieldParser" />
+<item name="edu.drexel.cs.rise.moka.jre16.model.MethodInfo" />
+<item name="edu.drexel.cs.rise.moka.jre16.parser.ClassParser" />
+</group>
+</group>
+<group name="M0">
+<item name="edu.drexel.cs.rise.moka.parser.ClassParser" />
+</group>
+</group>
+</group>
+<group name="M0">
+<item name="edu.drexel.cs.rise.moka.Extract" />
+</group>
+</group>
+<group name="edu.drexel.cs.rise.moka.ui.Progress">
+<item name="edu.drexel.cs.rise.moka.ui.Progress" />
+<item name="edu.drexel.cs.rise.caelus.CaelusException" />
+<item name="edu.drexel.cs.rise.caelus.TextAreaOutputStream" />
+<item name="edu.drexel.cs.rise.caelus.SwingUtilities" />
+</group>
+</group>
+<group name="M0">
+<item name="edu.drexel.cs.rise.moka.Program" />
+<item name="edu.drexel.cs.rise.moka.ui.Launcher" />
+</group>
+</group>
+<group name="edu.drexel.cs.rise.moka.parser.attr.CodeParser">
+<item name="edu.drexel.cs.rise.io.CountingInputStream" />
+<item name="edu.drexel.cs.rise.moka.parser.attr.Instructions" />
+<item name="edu.drexel.cs.rise.moka.parser.attr.Instructions$Instruction" />
+<item name="edu.drexel.cs.rise.moka.parser.attr.Instructions$SimpleInstruction" />
+<item name="edu.drexel.cs.rise.moka.parser.attr.CodeParser" />
+</group>
+<group name="edu.drexel.cs.rise.moka.xml.attr.ExceptionWriter">
+<item name="edu.drexel.cs.rise.moka.xml.attr.ExceptionWriter" />
+</group>
+<group name="edu.drexel.cs.rise.moka.parser.attr.EnclosingMethodParser">
+<item name="edu.drexel.cs.rise.moka.parser.attr.EnclosingMethodParser" />
+</group>
+</group>
+</group>
+</cluster>
