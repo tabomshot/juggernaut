@@ -211,6 +211,7 @@ public class DSMatrix {
             }
             
             DefaultMutableTreeNode newGroup = new DefaultMutableTreeNode(nm);
+            //((DefaultMutableTreeNode)args[0].getParent()).insert(newGroup, 0);
             ((DefaultMutableTreeNode)args[0].getParent()).add(newGroup);
 
             // put nodes to group
@@ -276,7 +277,8 @@ public class DSMatrix {
         
         ArrayList<String> res = new ArrayList();
         
-        Enumeration<DefaultMutableTreeNode> e = root.breadthFirstEnumeration();
+        //Enumeration<DefaultMutableTreeNode> e = root.breadthFirstEnumeration();
+        Enumeration<DefaultMutableTreeNode> e = root.preorderEnumeration();
         while(e.hasMoreElements()){
             String entry = e.nextElement().toString();
             System.out.println("Tree Entry " + entry);

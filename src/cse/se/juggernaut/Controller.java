@@ -223,6 +223,27 @@ public class Controller {
         }
     }
     
+    public void newClustering(){
+        
+        // reset cluster information
+        Enumeration<DefaultMutableTreeNode> e = this.getModel().getRoot().preorderEnumeration();
+        while(e.hasMoreElements()){
+            DefaultMutableTreeNode node = e.nextElement();
+            if( !node.isRoot() && !node.isLeaf() ){
+                this.getModel().ungroup(node.toString());
+            }
+        }
+    }
+    
+    public boolean openClustering(File file){
+        
+        return false;
+    }
+    
+    public void saveClustering(File file){
+        
+    }
+    
     public JTree getTreeViewUpdate(){
             
         JTree tree = new JTree(this.getModel().getRoot());

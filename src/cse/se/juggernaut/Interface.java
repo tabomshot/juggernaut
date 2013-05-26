@@ -298,6 +298,11 @@ public class Interface extends javax.swing.JFrame {
         IconLoadClustering.setFocusable(false);
         IconLoadClustering.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         IconLoadClustering.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        IconLoadClustering.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IconLoadClusteringActionPerformed(evt);
+            }
+        });
         jToolBar2.add(IconLoadClustering);
         jToolBar2.add(jSeparator13);
 
@@ -307,6 +312,11 @@ public class Interface extends javax.swing.JFrame {
         IconSaveClustering.setFocusable(false);
         IconSaveClustering.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         IconSaveClustering.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        IconSaveClustering.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IconSaveClusteringActionPerformed(evt);
+            }
+        });
         jToolBar2.add(IconSaveClustering);
 
         IconSaveClusteringAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/save-clsx-as.png"))); // NOI18N
@@ -315,6 +325,11 @@ public class Interface extends javax.swing.JFrame {
         IconSaveClusteringAs.setFocusable(false);
         IconSaveClusteringAs.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         IconSaveClusteringAs.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        IconSaveClusteringAs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IconSaveClusteringAsActionPerformed(evt);
+            }
+        });
         jToolBar2.add(IconSaveClusteringAs);
 
         jPanel1.setMinimumSize(new java.awt.Dimension(265, 0));
@@ -740,7 +755,9 @@ public class Interface extends javax.swing.JFrame {
             this.controlInterface.saveDSM(this.dsmFileChooser.getSelectedFile());
         } else {
             this.ItemSaveDSMAsActionPerformed(evt);
+            
         }
+        this.dsmFileOpened = true;
         this.dsmChanged = false;
     }//GEN-LAST:event_ItemSaveDSMActionPerformed
 
@@ -762,6 +779,7 @@ public class Interface extends javax.swing.JFrame {
 
     private void IconPartitionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconPartitionActionPerformed
         // TODO add your handling code here:
+        
         this.dsmChanged = true;
         
         this.setTreeViewUpdate();
@@ -770,7 +788,6 @@ public class Interface extends javax.swing.JFrame {
     private void IconMoveUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconMoveUpActionPerformed
 
         // TODO: test for multiple rows
-        
         int rows[] = moduleTree.getSelectionRows();
         for(int i = 0; i<rows.length; i++){
             DefaultMutableTreeNode node;
@@ -804,14 +821,11 @@ public class Interface extends javax.swing.JFrame {
         int ret = dsmFileChooser.showOpenDialog(this);
         if(ret == JFileChooser.APPROVE_OPTION){
             if(controlInterface.openDSM(dsmFileChooser.getSelectedFile())){
-                /* test tree view */
-                this.setTreeViewUpdate();
-                
-                /* set icon enabled */
-                this.setIconEnabled();
                 
                 this.dsmFileOpened = true;
                 this.dsmChanged = false;
+                this.setTreeViewUpdate();
+                this.setIconEnabled();
             } else {
                 // TODO : error
             }
@@ -833,18 +847,21 @@ public class Interface extends javax.swing.JFrame {
                 case JOptionPane.CANCEL_OPTION:
                     return;
             }
-            
         }
         
         String str = JOptionPane.showInputDialog("Enter the number of rows:");
-        int nrows = Integer.parseInt(str);
+        int nrows;
+        
+        if(str.isEmpty()){
+            nrows = 0;
+        } else {
+            nrows = Integer.parseInt(str);
+        }
+        
         if(controlInterface.newDSM(nrows)){
-            /* test tree view */
+
             this.setTreeViewUpdate();
-            
-            /* set icon enabled */
             this.setIconEnabled();
-            
             this.dsmFileOpened = false;
         } else {
               JOptionPane.showMessageDialog(this, "Error creating new DSM", "New DSM Error" , JOptionPane.ERROR_MESSAGE);
@@ -863,36 +880,88 @@ public class Interface extends javax.swing.JFrame {
 
     private void ItemSaveDSMAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemSaveDSMAsActionPerformed
 
-        this.dsmFileChooser.showSaveDialog(this);
-        this.controlInterface.saveDSM(this.dsmFileChooser.getSelectedFile());
-        this.dsmChanged = false;
+        int ret = this.dsmFileChooser.showSaveDialog(this);
+        if(ret == JFileChooser.APPROVE_OPTION){
+            this.controlInterface.saveDSM(this.dsmFileChooser.getSelectedFile());
+            this.dsmChanged = false;
+            this.dsmFileOpened = true;
+            this.setTreeViewUpdate();
+        }
+        
     }//GEN-LAST:event_ItemSaveDSMAsActionPerformed
 
     private void ItemNewClusteringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemNewClusteringActionPerformed
-        
-        /* TODO: ask save if there is any change */
-        
-        Enumeration<DefaultMutableTreeNode> e = this.controlInterface.getModel().getRoot().preorderEnumeration();
-        while(e.hasMoreElements()){
-            DefaultMutableTreeNode node = e.nextElement();
-            if( !node.isRoot() ){
-                if(!node.isLeaf()){
-                    this.controlInterface.getModel().ungroup(node.toString());
-                }
+       
+        // save dialog
+        if(this.clusterChanged){
+            switch(JOptionPane.showConfirmDialog(this, "Cluster has been modified. Save changes?")){
+                case JOptionPane.OK_OPTION:
+                    this.ItemSaveClusteringActionPerformed(evt);
+                    this.clusterChanged = false;
+                    break;
+                case JOptionPane.NO_OPTION:
+                    this.clusterChanged = false;
+                    break;
+                case JOptionPane.CANCEL_OPTION:
+                    return;
             }
         }
+        this.controlInterface.newClustering();
+        
+        this.setTreeViewUpdate();
     }//GEN-LAST:event_ItemNewClusteringActionPerformed
 
     private void ItemLoadClusteringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemLoadClusteringActionPerformed
-        // TODO add your handling code here:
+
+        // save dialog
+        if(this.clusterChanged){
+            switch(JOptionPane.showConfirmDialog(this, "Cluster has been modified. Save changes?")){
+                case JOptionPane.OK_OPTION:
+                    this.ItemSaveClusteringActionPerformed(evt);
+                    this.clusterChanged = false;
+                    break;
+                case JOptionPane.NO_OPTION:
+                    this.clusterChanged = false;
+                    break;
+                case JOptionPane.CANCEL_OPTION:
+                    return;
+            }
+        }
+        
+        int ret = clusterFileChooser.showOpenDialog(this);
+        if(ret == JFileChooser.APPROVE_OPTION){
+            if(controlInterface.openClustering(clusterFileChooser.getSelectedFile())){
+                
+                // cluster load ok
+                this.setTreeViewUpdate();
+                this.clusterFileOpened = true;
+                this.clusterChanged = false;
+            } else {
+                // TODO : error
+            }
+        }
     }//GEN-LAST:event_ItemLoadClusteringActionPerformed
 
     private void ItemSaveClusteringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemSaveClusteringActionPerformed
         // TODO add your handling code here:
+        if(this.clusterFileOpened){
+            this.controlInterface.saveClustering(this.dsmFileChooser.getSelectedFile());
+        } else {
+            this.ItemSaveClusteringAsActionPerformed(evt);
+        }
+        this.clusterFileOpened = true;
+        this.clusterChanged = false;
     }//GEN-LAST:event_ItemSaveClusteringActionPerformed
 
     private void ItemSaveClusteringAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemSaveClusteringAsActionPerformed
         // TODO add your handling code here:
+        int ret = this.clusterFileChooser.showSaveDialog(this);
+        if(ret == JFileChooser.APPROVE_OPTION){
+            this.controlInterface.saveClustering(this.clusterFileChooser.getSelectedFile());
+            this.clusterChanged = false;
+            this.clusterFileOpened = true;
+            this.setTreeViewUpdate();
+        }
     }//GEN-LAST:event_ItemSaveClusteringAsActionPerformed
 
     private void ItemExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemExitActionPerformed
@@ -905,6 +974,20 @@ public class Interface extends javax.swing.JFrame {
                     break;
                 case JOptionPane.NO_OPTION:
                     this.dsmChanged = false;
+                    break;
+                case JOptionPane.CANCEL_OPTION:
+                    return;
+            }
+        }
+        
+        if(this.clusterChanged){
+            switch(JOptionPane.showConfirmDialog(this, "Cluster has been modified. Save changes?")){
+                case JOptionPane.OK_OPTION:
+                    this.ItemSaveClusteringActionPerformed(evt);
+                    this.clusterChanged = false;
+                    break;
+                case JOptionPane.NO_OPTION:
+                    this.clusterChanged = false;
                     break;
                 case JOptionPane.CANCEL_OPTION:
                     return;
@@ -986,7 +1069,7 @@ public class Interface extends javax.swing.JFrame {
 
     private void IconGroupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconGroupActionPerformed
 
-        /* detected bugs  */
+        /* problem: bugs for expanded group  */
         DefaultMutableTreeNode root = this.controlInterface.getModel().getRoot();
         ArrayList<String> en = this.controlInterface.getModel().getTreeEntry();
         
@@ -1052,6 +1135,21 @@ public class Interface extends javax.swing.JFrame {
 
         this.ItemNewClusteringActionPerformed(evt);
     }//GEN-LAST:event_IconNewClusteringActionPerformed
+
+    private void IconLoadClusteringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconLoadClusteringActionPerformed
+
+        this.ItemLoadClusteringActionPerformed(evt);
+    }//GEN-LAST:event_IconLoadClusteringActionPerformed
+
+    private void IconSaveClusteringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconSaveClusteringActionPerformed
+
+        this.ItemSaveClusteringActionPerformed(evt);
+    }//GEN-LAST:event_IconSaveClusteringActionPerformed
+
+    private void IconSaveClusteringAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconSaveClusteringAsActionPerformed
+
+        this.ItemSaveClusteringAsActionPerformed(evt);
+    }//GEN-LAST:event_IconSaveClusteringAsActionPerformed
 
     
     // Custom variable declaration
