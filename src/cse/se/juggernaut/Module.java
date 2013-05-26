@@ -1,6 +1,7 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Software Engineering Project Juggernaut
+ * Jaehwan Lee
+ * Sujeong Kim
  */
 package cse.se.juggernaut;
 

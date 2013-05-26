@@ -908,25 +908,13 @@ public class Interface extends javax.swing.JFrame {
 
     private void ItemLoadClusteringActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemLoadClusteringActionPerformed
 
-        // save dialog
-        if(this.clusterChanged){
-            switch(JOptionPane.showConfirmDialog(this, "Cluster has been modified. Save changes?")){
-                case JOptionPane.OK_OPTION:
-                    this.ItemSaveClusteringActionPerformed(evt);
-                    this.clusterChanged = false;
-                    break;
-                case JOptionPane.NO_OPTION:
-                    this.clusterChanged = false;
-                    break;
-                case JOptionPane.CANCEL_OPTION:
-                    return;
-            }
-        }
-        
         int ret = clusterFileChooser.showOpenDialog(this);
         if(ret == JFileChooser.APPROVE_OPTION){
+            // reset clustering
+            this.ItemNewClusteringActionPerformed(evt);
+            
+            // load clustering
             if(controlInterface.openClustering(clusterFileChooser.getSelectedFile())){
-                
                 // cluster load ok
                 this.setTreeViewUpdate();
                 this.clusterFileOpened = true;
@@ -943,11 +931,11 @@ public class Interface extends javax.swing.JFrame {
         // TODO add your handling code here:
         if(this.clusterFileOpened){
             this.controlInterface.saveClustering(this.dsmFileChooser.getSelectedFile());
+            this.clusterFileOpened = true;
+            this.clusterChanged = false;
         } else {
             this.ItemSaveClusteringAsActionPerformed(evt);
         }
-        this.clusterFileOpened = true;
-        this.clusterChanged = false;
     }//GEN-LAST:event_ItemSaveClusteringActionPerformed
 
     private void ItemSaveClusteringAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ItemSaveClusteringAsActionPerformed
@@ -1020,10 +1008,12 @@ public class Interface extends javax.swing.JFrame {
         } else {
             String newname = JOptionPane.showInputDialog("New name : ");
             if( !newname.isEmpty() ){
+                ArrayList<String> en = new ArrayList();
+                en.add("$root");
+                en.addAll(this.controlInterface.getModel().getTableEntry());
+                
                 int rows[] = this.moduleTree.getSelectionRows();
-                ArrayList<String> en = this.controlInterface.getModel().getTreeEntry();
-                String oldname = en.get(rows[0]-1);
-
+                String oldname = en.get(rows[0]);
                 this.controlInterface.getModel().renameNode(oldname, newname);
             }
         }
@@ -1037,7 +1027,9 @@ public class Interface extends javax.swing.JFrame {
         // !!TODO: Test for group
         
         DefaultMutableTreeNode root = this.controlInterface.getModel().getRoot();
-        ArrayList<String> en = this.controlInterface.getModel().getTreeEntry();
+        ArrayList<String> en = new ArrayList();
+        en.add("$root");
+        en.addAll(this.controlInterface.getModel().getTableEntry());
         
         int rows[] = this.moduleTree.getSelectionRows();
         for(int i=0; i<rows.length; i++){
@@ -1068,7 +1060,9 @@ public class Interface extends javax.swing.JFrame {
 
         /* problem: bugs for expanded group  */
         DefaultMutableTreeNode root = this.controlInterface.getModel().getRoot();
-        ArrayList<String> en = this.controlInterface.getModel().getTreeEntry();
+        ArrayList<String> en = new ArrayList();
+        en.add("$root");
+        en.addAll(this.controlInterface.getModel().getTableEntry());
         
         if(this.moduleTree.getSelectionCount()>0){
             int rows[] = this.moduleTree.getSelectionRows();
@@ -1088,14 +1082,20 @@ public class Interface extends javax.swing.JFrame {
 
         // TODO: test
         DefaultMutableTreeNode root = this.controlInterface.getModel().getRoot();
-        ArrayList<String> en = this.controlInterface.getModel().getTreeEntry();
         
-        System.out.println("@#$@#$ PATH : " + this.moduleTree.getSelectionPath().toString());
+        // table entry list is used to get selection
+        ArrayList<String> en = new ArrayList();
+        en.add("$root");
+        en.addAll(this.controlInterface.getModel().getTableEntry());
+        
+        System.out.println("Selected group path : " + this.moduleTree.getSelectionPath().toString());
         
         if(this.moduleTree.getSelectionCount()>0){
             int rows[] = this.moduleTree.getSelectionRows();
-            DefaultMutableTreeNode node = this.controlInterface.getModel().findNode(root, en.get(rows[0]-1));
+            System.out.println("Selection Row : "+ rows[0]);
+            DefaultMutableTreeNode node = this.controlInterface.getModel().findNode(root, en.get(rows[0]));
             if(!node.isRoot()){
+                //System.out.println();
                 this.controlInterface.getModel().ungroup(node.toString());
             }
         }

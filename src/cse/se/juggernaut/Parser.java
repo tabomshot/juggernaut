@@ -1,12 +1,17 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Software Engineering Project Juggernaut
+ * Jaehwan Lee
+ * Sujeong Kim
  */
 package cse.se.juggernaut;
 
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -23,7 +28,7 @@ import org.xml.sax.SAXException;
  */
 public class Parser {
     
-    private static void addChildren(Element parent, DefaultMutableTreeNode pnode){
+    private static void parseFileHelper(Element parent, DefaultMutableTreeNode pnode){
         // get children
         NodeList children = parent.getChildNodes();
         
@@ -34,9 +39,10 @@ public class Parser {
                 Element node = (Element)child;
                 if(node.getTagName().equals("group")){
                     // group: make treenode for group and add its children
+                    // sort of tricky way
                     DefaultMutableTreeNode tn = new DefaultMutableTreeNode(node.getAttribute("name"));
                     pnode.add(tn);
-                    Parser.addChildren(node, tn);
+                    Parser.parseFileHelper(node, tn);
                 } else if(node.getTagName().equals("item")){
                     // item: make treenode for leaf
                     DefaultMutableTreeNode tn = new DefaultMutableTreeNode(node.getAttribute("name"));
@@ -47,7 +53,7 @@ public class Parser {
         
     }
     
-    public static DefaultMutableTreeNode parse( File file ) {
+    public static DefaultMutableTreeNode parseFile( File file ) {
         
         DefaultMutableTreeNode res = new DefaultMutableTreeNode("$root");
         
@@ -68,7 +74,7 @@ public class Parser {
                     Element node = (Element)child;
                     if(node.getAttribute("name").equalsIgnoreCase("ROOT")){
                         // call recursive function
-                        Parser.addChildren(node, res);
+                        Parser.parseFileHelper(node, res);
                     } else {
                         // error
                         return res;
@@ -86,5 +92,54 @@ public class Parser {
         
         return res;
     }
+    
+    private static void parseTreeHelper(FileWriter fw, DefaultMutableTreeNode node) throws IOException{
+        String gs1 = "<group name=\"";
+        String gs2 = "\">";
+        String ge = "</group>";
+        String is = "<item name=\"";
+        String ie = "\" />";
 
+        if(node.isLeaf()){       
+            // item
+            fw.write(is + node.toString() + ie + "\n");
+        } else {
+            // group start
+            if(node.isRoot()){
+                fw.write(gs1+"root"+gs2+"\n");
+            } else {
+                fw.write(gs1+node.toString()+gs2+"\n");
+            }
+            
+            // write children
+            for(int i=0; i<node.getChildCount(); i++){
+                Parser.parseTreeHelper(fw, (DefaultMutableTreeNode) node.getChildAt(i));
+            }
+            
+            // group end
+            fw.append(ge+"\n");
+        }
+    }
+    
+    public static void parseTree(File file, DefaultMutableTreeNode root){
+        String ss = "<cluster xmlns=\"http://rise.cs.drexel.edu/minos/clsx\">";
+        String es = "</cluster>";
+        
+        try {
+            FileWriter fw = new FileWriter(file);
+            
+            // write start
+            fw.write(ss+'\n');
+            
+            // start write
+            Parser.parseTreeHelper(fw, root);
+            
+            // write end
+            fw.write(es+"\n");
+            fw.close();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(Parser.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

@@ -43,7 +43,7 @@ public class DSMatrix {
     {
         // rename module
         DefaultMutableTreeNode node = this.findNode(root, oldName);
-        if(node!=null ){
+        if(node!=null && !node.isRoot()){
             ((Module)node.getUserObject()).name = newName;
             
             // rename module from dependency list
@@ -233,11 +233,8 @@ public class DSMatrix {
             DefaultMutableTreeNode children[];
             children = new DefaultMutableTreeNode[groupToDel.getChildCount()];
 
-            DefaultMutableTreeNode tmp = (DefaultMutableTreeNode)groupToDel.getFirstChild();
-            children[0] = tmp;
-            for(int i=1; i<groupToDel.getChildCount(); i++){
-                children[i] = tmp.getNextSibling();
-                tmp = tmp.getNextSibling();
+            for(int i=0; i<groupToDel.getChildCount(); i++){
+                children[i] = (DefaultMutableTreeNode) groupToDel.getChildAt(i);
             }
             
             // put children to parent
@@ -283,7 +280,7 @@ public class DSMatrix {
         Enumeration<DefaultMutableTreeNode> e = root.preorderEnumeration();
         while(e.hasMoreElements()){
             String entry = e.nextElement().toString();
-            System.out.println("Tree Entry " + entry);
+            //System.out.println("Tree Entry " + entry);
             res.add(entry);
         }
         

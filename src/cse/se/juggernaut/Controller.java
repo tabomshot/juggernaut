@@ -218,26 +218,46 @@ public class Controller {
     public void newClustering(){
         
         // reset cluster information
-        Enumeration<DefaultMutableTreeNode> e = this.getModel().getRoot().preorderEnumeration();
-        while(e.hasMoreElements()){
-            DefaultMutableTreeNode node = e.nextElement();
-            if( !node.isRoot() && !node.isLeaf() ){
-                this.getModel().ungroup(node.toString());
+        boolean flag = false;
+        do{
+            for(int i=0; i<this.dsm.getRoot().getChildCount(); i++){
+                if( !this.dsm.getRoot().getChildAt(i).isLeaf() ){
+                    flag=true;
+                    break;
+                } else {
+                    flag=false;
+                }
             }
-        }
+            
+            Enumeration<DefaultMutableTreeNode> e = this.dsm.getRoot().depthFirstEnumeration();
+            while(e.hasMoreElements()){
+                DefaultMutableTreeNode node = e.nextElement();
+                if( !node.isRoot() && !node.isLeaf() ){
+                    this.getModel().ungroup(node.toString());
+                }
+            }
+        } while(flag);
     }
     
     public boolean openClustering(File file){
         try {
-            // parse xml, make tree
-            DefaultMutableTreeNode res = Parser.parse(file);
+            // parse xml, get tree
+            DefaultMutableTreeNode res = Parser.parseFile(file);
             
             // apply group entry from bottom
             Enumeration<DefaultMutableTreeNode> e = res.postorderEnumeration();
             while(e.hasMoreElements()){
                 DefaultMutableTreeNode node = e.nextElement();
                 if(!node.isRoot() && !node.isLeaf()){
-                    String gname = node.toString() + "  "; // sort of tricky
+                    // update group name
+                    String gname = node.toString();
+                    if(this.dsm.findNode(this.dsm.getRoot(), gname) != null){
+                        int i=0;
+                        while(this.dsm.findNode(this.dsm.getRoot(), gname+".g"+i) != null) i++;
+                        gname +=".g"+i;
+                    }
+                    node.setUserObject(gname);
+                    
                     DefaultMutableTreeNode args[] = new DefaultMutableTreeNode[node.getChildCount()];
                     for(int i=0; i<node.getChildCount(); i++){
                         args[i] = this.getModel().findNode(this.getModel().getRoot(), node.getChildAt(i).toString());
@@ -245,15 +265,16 @@ public class Controller {
                     this.getModel().group(gname, args);
                 }
             }
+            return true;
             
         } catch (Exception ex) {
             Logger.getLogger(Controller.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
-        return false;
     }
     
     public void saveClustering(File file){
-        
+        Parser.parseTree(file, this.getModel().getRoot());
     }
     
     public JTree getTreeViewUpdate(){
@@ -307,22 +328,9 @@ public class Controller {
         
         // get valid entries
         ArrayList<String> list = dsm.getTableEntry();
-         
-        for(int i=0; i<list.size(); i++){
-            System.out.println("[DEBUG] entry ["+list.get(i)+"] is dependent to :");
-            DefaultMutableTreeNode nn = dsm.findNode(dsm.getRoot(), list.get(i));
-            ArrayList<String> dd = ((Module)nn.getUserObject()).depList;
-            for(int j=0; j<dd.size(); j++){
-                System.out.println("        " + dd.get(j));
-            }
-            System.out.println("");
-        }
         
         list = dsm.getTableEntry();
-        for(int i=0; i<list.size(); i++){
-            System.out.println("Entry : " + list.get(i));
-        }
-        
+
         // column header [1, 2, 3, ...]
         String[] colheader = new String[list.size()];
         for(int i=0; i<list.size(); i++){
@@ -377,18 +385,18 @@ public class Controller {
         
         JTable table = new JTable(obj, colheader);
 
-        // Coloring here, generate group list
+        // generate group list
         ArrayList<String> gl = new ArrayList();
-        Enumeration<DefaultMutableTreeNode> eg = this.getModel().getRoot().depthFirstEnumeration();
+        Enumeration<DefaultMutableTreeNode> eg = this.getModel().getRoot().breadthFirstEnumeration();
         while(eg.hasMoreElements()){
             DefaultMutableTreeNode node = eg.nextElement();
-            if(!node.isRoot() && !node.isLeaf()){
+            if( !node.isRoot() && !node.isLeaf() ){
                 gl.add(node.toString());
             }  
         }
         
         // start set color from root
-        Color[] cList = { Color.BLUE, Color.YELLOW, Color.GREEN, Color.ORANGE, Color.MAGENTA, Color.CYAN, Color.PINK, Color.RED };
+        Color[] cList = { new Color(128,255,128), Color.YELLOW, new Color(128,255,255), Color.ORANGE, Color.MAGENTA, Color.CYAN, Color.PINK, Color.RED };
         
         Color[][] objColor = new Color[obj.length][obj.length];
         for(int i=0; i<obj.length; i++){
@@ -400,8 +408,8 @@ public class Controller {
         // set color every group
         for(int i=0; i<gl.size(); i++){
             DefaultMutableTreeNode group = this.getModel().findNode(this.getModel().getRoot(), gl.get(i));
-            Enumeration<DefaultMutableTreeNode> children = group.depthFirstEnumeration();
-            int low=100000000, high=0; // this looks seek
+            Enumeration<DefaultMutableTreeNode> children = group.breadthFirstEnumeration();
+            int low=100000000, high=0; // this looks sick
             while(children.hasMoreElements()){
                 DefaultMutableTreeNode child = children.nextElement();
                 int index = en.indexOf(child.toString());
@@ -410,12 +418,12 @@ public class Controller {
                     if(index>high) high = index;
                 }
             }
-            System.out.println("low:"+low+"::"+"high"+high);
+            //System.out.println("low:"+low+"::"+"high"+high);
             for(int j=low; j<=high; j++){
                 for(int k=low; k<=high; k++){
-                    if(objColor[j][k].equals(Color.WHITE)){
-                        objColor[j][k] = cList[group.getPath().length % cList.length];
-                    }
+                    //if(objColor[j][k].equals(Color.WHITE)){
+                        objColor[j][k] = cList[ (group.getPath().length - 2) % cList.length];
+                    //}
                 }
             }
         }
@@ -456,7 +464,7 @@ public class Controller {
     public void sortEntry(){
         
         // get group list with root group
-        Enumeration<DefaultMutableTreeNode> eg = this.getModel().getRoot().depthFirstEnumeration();
+        Enumeration<DefaultMutableTreeNode> eg = this.getModel().getRoot().preorderEnumeration();
         while(eg.hasMoreElements()){
             DefaultMutableTreeNode node = eg.nextElement();
             if( !node.isLeaf() ){
