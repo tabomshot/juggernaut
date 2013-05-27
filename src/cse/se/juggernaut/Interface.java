@@ -1027,17 +1027,10 @@ public class Interface extends javax.swing.JFrame {
         // !!TODO: Test for group
         
         DefaultMutableTreeNode root = this.controlInterface.getModel().getRoot();
-        ArrayList<String> en = new ArrayList();
-        en.add("$root");
-        en.addAll(this.controlInterface.getModel().getTableEntry());
         
         int rows[] = this.moduleTree.getSelectionRows();
         for(int i=0; i<rows.length; i++){
-            if(this.controlInterface.getModel().findNode(root, en.get(rows[i]-1)).isLeaf()){
-                this.controlInterface.getModel().deleteNode(en.get(rows[i]-1));
-            } else {
-                JOptionPane.showMessageDialog(this, "Ungroup node before delete!", "Deletion  error", JOptionPane.ERROR_MESSAGE);
-            }
+            this.controlInterface.getModel().deleteNode(this.moduleTree.getSelectionPaths()[i].getLastPathComponent().toString());
         }
         this.dsmChanged = true;
         
@@ -1060,15 +1053,12 @@ public class Interface extends javax.swing.JFrame {
 
         /* problem: bugs for expanded group  */
         DefaultMutableTreeNode root = this.controlInterface.getModel().getRoot();
-        ArrayList<String> en = new ArrayList();
-        en.add("$root");
-        en.addAll(this.controlInterface.getModel().getTableEntry());
-        
+
         if(this.moduleTree.getSelectionCount()>0){
             int rows[] = this.moduleTree.getSelectionRows();
             DefaultMutableTreeNode args[] = new DefaultMutableTreeNode[rows.length];
             for(int i=0; i<rows.length; i++){
-                args[i] = this.controlInterface.getModel().findNode(root, en.get(rows[i]));
+                args[i] = this.controlInterface.getModel().findNode(root, this.moduleTree.getSelectionPaths()[i].getLastPathComponent().toString());
             }
             String str = JOptionPane.showInputDialog("Enter Group Name\n");
             this.controlInterface.getModel().group(str, args);
@@ -1083,17 +1073,8 @@ public class Interface extends javax.swing.JFrame {
         // TODO: test
         DefaultMutableTreeNode root = this.controlInterface.getModel().getRoot();
         
-        // table entry list is used to get selection
-        ArrayList<String> en = new ArrayList();
-        en.add("$root");
-        en.addAll(this.controlInterface.getModel().getTableEntry());
-        
-        System.out.println("Selected group path : " + this.moduleTree.getSelectionPath().toString());
-        
         if(this.moduleTree.getSelectionCount()>0){
-            int rows[] = this.moduleTree.getSelectionRows();
-            System.out.println("Selection Row : "+ rows[0]);
-            DefaultMutableTreeNode node = this.controlInterface.getModel().findNode(root, en.get(rows[0]));
+            DefaultMutableTreeNode node = this.controlInterface.getModel().findNode(root, this.moduleTree.getSelectionPath().getLastPathComponent().toString());
             if(!node.isRoot()){
                 //System.out.println();
                 this.controlInterface.getModel().ungroup(node.toString());
