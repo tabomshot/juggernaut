@@ -271,6 +271,11 @@ public class Interface extends javax.swing.JFrame {
         IconSaveDSMAs.setFocusable(false);
         IconSaveDSMAs.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         IconSaveDSMAs.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        IconSaveDSMAs.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IconSaveDSMAsActionPerformed(evt);
+            }
+        });
         jToolBar2.add(IconSaveDSMAs);
         jToolBar2.add(jSeparator12);
 
@@ -512,7 +517,7 @@ public class Interface extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 509, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 513, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -712,7 +717,7 @@ public class Interface extends javax.swing.JFrame {
     private void IconRedrawActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconRedrawActionPerformed
         
         ArrayList<String> en = this.controlInterface.getModel().getTableEntry();
-        DefaultListModel<String> lm = new DefaultListModel();
+        DefaultListModel lm = new DefaultListModel();
         for(int i=0; i<en.size(); i++){
             lm.addElement(en.get(i));
         }
@@ -1147,6 +1152,11 @@ public class Interface extends javax.swing.JFrame {
 
         this.ItemSaveClusteringAsActionPerformed(evt);
     }//GEN-LAST:event_IconSaveClusteringAsActionPerformed
+
+    private void IconSaveDSMAsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconSaveDSMAsActionPerformed
+        
+        this.ItemSaveDSMAsActionPerformed(evt);
+    }//GEN-LAST:event_IconSaveDSMAsActionPerformed
 
     
     // Custom variable declaration
