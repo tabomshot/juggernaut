@@ -1013,12 +1013,8 @@ public class Interface extends javax.swing.JFrame {
         } else {
             String newname = JOptionPane.showInputDialog("New name : ");
             if( !newname.isEmpty() ){
-                ArrayList<String> en = new ArrayList();
-                en.add("$root");
-                en.addAll(this.controlInterface.getModel().getTableEntry());
                 
-                int rows[] = this.moduleTree.getSelectionRows();
-                String oldname = en.get(rows[0]);
+                String oldname = this.moduleTree.getSelectionPath().getLastPathComponent().toString();
                 this.controlInterface.getModel().renameNode(oldname, newname);
             }
         }
@@ -1101,7 +1097,7 @@ public class Interface extends javax.swing.JFrame {
             if( !node.equals(this.controlInterface.getModel().getRoot()) ){
                 this.controlInterface.getModel().moveNodeDown(node.toString());
             }
-        }
+        } 
         this.dsmChanged = true;
         
         this.setTreeViewUpdate();
