@@ -512,17 +512,75 @@ public class Controller {
                 for(int i=node.getChildCount()-1; i>=0; i--){
                     for(int j=0; j<i; j++){
                         // (b compare to a) || (length)
-                        if( node.getChildAt(j).toString().length() > node.getChildAt(j+1).toString().length()){
+                        //if( node.getChildAt(j).toString().length() > node.getChildAt(j+1).toString().length()){
+                            //this.getModel().moveNodeDown(node.getChildAt(j).toString());
+                        //} else if (node.getChildAt(j).toString().length() == node.getChildAt(j+1).toString().length()){
+                        if( node.getChildAt(j).toString().compareToIgnoreCase(node.getChildAt(j+1).toString()) > 0 ) {
                             this.getModel().moveNodeDown(node.getChildAt(j).toString());
-                        } else if (node.getChildAt(j).toString().length() == node.getChildAt(j+1).toString().length()){
-                            if( node.getChildAt(j).toString().compareTo(node.getChildAt(j+1).toString()) > 0 ) {
-                                this.getModel().moveNodeDown(node.getChildAt(j).toString());
-                            }
                         }
                     }
                 }
             }  
         }
+        
+    }
+    
+    
+    private void partitionEntryHelper(ArrayList<String> history){
+        
+        
+    }
+    
+    public void partitionEntry(){
+        
+        // Start DSM Partitioning
+        ArrayList<String> list = new ArrayList();
+        
+        do{    
+            // get list
+            list = this.dsm.getTableEntry();
+            
+            // DSM Partitioning [Step 1]
+            for(int i=0; i<list.size(); i++){
+                DefaultMutableTreeNode node = this.dsm.findNode(this.dsm.getRoot(), list.get(i));
+                
+                // with no input -> no deplist
+                if(((Module)node.getUserObject()).depList.isEmpty()){
+                    // move node to the top
+                    for(int j=0; j<i; j++){
+                        this.dsm.moveNodeUp(list.get(i).toString());
+                    }
+                    list.remove(list.get(i));
+                }
+            }
+            
+            // DSM Partitioning [Step 2]
+            for(int i=0; i<list.size(); i++){
+                DefaultMutableTreeNode node = this.dsm.findNode(this.dsm.getRoot(), list.get(i));
+                
+                // with no output -> not in every deplist
+                boolean isreturn = false;
+                for(int j=1; j<list.size(); j++){
+                    if(((Module)node.getUserObject()).depList.contains(list.get(i).toString())){
+                        isreturn = true;
+                        break;
+                    }
+                }
+                
+                // move node with no output to the top
+                if(!isreturn){
+                    for(int j=0; j<i; j++){
+                        this.dsm.moveNodeDown(list.get(i).toString());
+                    }
+                    list.remove(list.get(i));
+                }
+            }
+            
+            // DSM Partitioning [Step3]
+            
+            
+        }while(list.isEmpty());
+        
     }
     
     public JList setCellRenderer(JList rowHeader, JTable table, boolean showRowLabels){

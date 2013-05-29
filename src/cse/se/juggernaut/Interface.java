@@ -779,7 +779,8 @@ public class Interface extends javax.swing.JFrame {
 
     private void IconPartitionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconPartitionActionPerformed
         // TODO add your handling code here:
-        
+        this.ItemNewClusteringActionPerformed(evt);
+        this.controlInterface.partitionEntry();
         this.dsmChanged = true;
         
         this.setTreeViewUpdate();
@@ -852,7 +853,7 @@ public class Interface extends javax.swing.JFrame {
         String str = JOptionPane.showInputDialog("Enter the number of rows:");
         int nrows;
         
-        if(str.isEmpty()){
+        if(str == null){
             nrows = 0;
         } else {
             nrows = Integer.parseInt(str);
