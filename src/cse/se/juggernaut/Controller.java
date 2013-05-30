@@ -592,6 +592,7 @@ public class Controller {
     
     public void partitionEntry(){
         
+        boolean partitionEnd = false;
         for(int g=0; true; g++){
             // get list
             ArrayList<String> list = this.dsm.getTableEntry();
@@ -658,8 +659,7 @@ public class Controller {
             }
             
             // partitioning is over if the list is empty [Step3]
-            //if(list.isEmpty()) break;
-            if(g>10) break;
+            if(partitionEnd) break;
 
             // DSM Partitioning [Step4]
             for(int i=0; i<list.size(); i++){
@@ -680,7 +680,10 @@ public class Controller {
                     }
                     
                     // start over
+                    partitionEnd = false;
                     break;
+                } else {
+                    partitionEnd = true;
                 }
             }
         }
