@@ -385,7 +385,7 @@ public class Controller {
         
         // set up table cells from dependency lists
         for(int i=0; i<list.size(); i++){
-            Module module = (Module) dsm.findNode(dsm.getRoot(), list.get(i)).getUserObject();
+            Module module = (Module) (dsm.findNode(dsm.getRoot(), list.get(i)).getUserObject());
             for(int j=0; j<module.depList.size(); j++){
                 String dep = module.depList.get(j);
                 DefaultMutableTreeNode dnode = dsm.findNode(dsm.getRoot(), dep);
@@ -395,11 +395,19 @@ public class Controller {
                 for(int k=0; k<path.length; k++){
                     if( !path[k].isLeaf() && !((Module)opath[k]).expand ){
                         int col = list.indexOf( path[k].toString() );
-                        obj[i][col] = "x";
+                        if(i==col){
+                            obj[i][col] = ".";
+                        } else{
+                            obj[i][col] = "x";
+                        }
                         break;
                     } else if (path[k].isLeaf()) {
                         int col = list.indexOf(path[k].toString());
-                        obj[i][col] = "x";
+                        if(i==col){
+                            obj[i][col] = ".";
+                        } else{
+                            obj[i][col] = "x";
+                        }
                         break;
                     }
                 }
@@ -526,60 +534,156 @@ public class Controller {
     }
     
     
-    private void partitionEntryHelper(ArrayList<String> history){
+    private boolean partitionEntryHelper(ArrayList<String> history, ArrayList<String> circuit, DefaultMutableTreeNode node ){
         
+        if( history.contains(node.toString())){
+            System.out.println("[DEBUG]found circuit for: " + node.toString());
+            for(int i=0; i<history.size(); i++){
+                System.out.println("[DEBUG]history: " + history.get(i));
+            }
+            // if contains, make a circuit and return true
+            int start = history.indexOf(node.toString());
+            int end = history.size();
+            
+            for(int i=start; i<end; i++){
+                circuit.add(history.get(i));
+            }
+            return true;
+            
+        } else {
+            // if not contains, add to history and continue
+            history.add(node.toString());
+        }
         
+        // get dependency list and search
+        ArrayList<String> dep = ((Module) node.getUserObject()).depList;
+        
+        for(int i=0; i<dep.size(); i++){
+            
+            DefaultMutableTreeNode dnode = this.dsm.findNode(this.dsm.getRoot(), dep.get(i));
+            TreeNode[] dpath = dnode.getPath();
+            DefaultMutableTreeNode res = null;
+            
+            // get actual entry node of dnode (leaf or group entry)
+            for(int j=0; j<dpath.length; j++){
+                res = (DefaultMutableTreeNode) dpath[j];
+                if( !res.isLeaf()  && !((Module)res.getUserObject()).expand ){
+                    break;
+                } else if (res.isLeaf()) {
+                    break;
+                }
+            }
+            
+            // exclude dnode with self dependency group
+            if( !res.isLeaf() && !res.toString().equals(node.toString())){
+                // do search down for group node
+                if( this.partitionEntryHelper((ArrayList<String>) history.clone(), circuit, res) ){
+                    return true;
+                }
+            } else if( res.isLeaf()) {
+                // do search down for leaf node
+                if( this.partitionEntryHelper((ArrayList<String>) history.clone(), circuit, res) ){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     
     public void partitionEntry(){
         
-        // Start DSM Partitioning
-        ArrayList<String> list = new ArrayList();
-        
-        do{    
+        for(int g=0; true; g++){
             // get list
-            list = this.dsm.getTableEntry();
-            
+            ArrayList<String> list = this.dsm.getTableEntry();
+            ArrayList<String> step1list = (ArrayList<String>) list.clone();
+            ArrayList<String> step2list = (ArrayList<String>) list.clone();
+                    
             // DSM Partitioning [Step 1]
-            for(int i=0; i<list.size(); i++){
-                DefaultMutableTreeNode node = this.dsm.findNode(this.dsm.getRoot(), list.get(i));
+            for(int i=0; i<step1list.size(); i++){
+                DefaultMutableTreeNode node = this.dsm.findNode(this.dsm.getRoot(), step1list.get(i));
+                Module module = (Module) node.getUserObject();
                 
                 // with no input -> no deplist
-                if(((Module)node.getUserObject()).depList.isEmpty()){
+                if(module.depList.isEmpty()){
                     // move node to the top
-                    for(int j=0; j<i; j++){
-                        this.dsm.moveNodeUp(list.get(i).toString());
+                    for(int j=0; j<step1list.size(); j++){
+                        this.dsm.moveNodeUp(node.toString());
                     }
-                    list.remove(list.get(i));
+                    list.remove(step1list.get(i));
                 }
             }
             
             // DSM Partitioning [Step 2]
-            for(int i=0; i<list.size(); i++){
-                DefaultMutableTreeNode node = this.dsm.findNode(this.dsm.getRoot(), list.get(i));
+            // fin i(col) that gives output to j(row)
+            for(int i=0; i<step2list.size(); i++){
+                boolean isout = false;
                 
-                // with no output -> not in every deplist
-                boolean isreturn = false;
-                for(int j=1; j<list.size(); j++){
-                    if(((Module)node.getUserObject()).depList.contains(list.get(i).toString())){
-                        isreturn = true;
-                        break;
+                // check deplist of each j
+                for(int j=0; j<step2list.size(); j++){
+                    Module module = (Module) this.dsm.findNode(this.dsm.getRoot(), step2list.get(j)).getUserObject();
+                    
+                    // check deplist that dependent to i
+                    for(int k=0; k<module.depList.size(); k++){
+                        DefaultMutableTreeNode dnode;
+                        TreeNode[] dpath;
+                        
+                        DefaultMutableTreeNode res = null;
+                        dnode = this.dsm.findNode(this.dsm.getRoot(), module.depList.get(k) );
+                        dpath = dnode.getPath();
+                        
+                        for(int p=0; p<dpath.length; p++){
+                            res = (DefaultMutableTreeNode) dpath[p];
+                            if( !res.isLeaf()  && !((Module)res.getUserObject()).expand ){
+                                break;
+                            } else if (res.isLeaf()) {
+                                break;
+                            }
+                        }
+                        
+                        if(step2list.get(i).equals(res.toString())){
+                            isout = true;
+                            break;
+                        }
                     }
                 }
                 
-                // move node with no output to the top
-                if(!isreturn){
-                    for(int j=0; j<i; j++){
-                        this.dsm.moveNodeDown(list.get(i).toString());
+                // node with no output moves to the top
+                if( !isout ){
+                    //System.out.println("[DEBUG] go bottom : " + step2list.get(i));
+                    for(int j=0; j<step2list.size(); j++){
+                        this.dsm.moveNodeDown(step2list.get(i).toString());
                     }
-                    list.remove(list.get(i));
+                    list.remove(step2list.get(i));
                 }
             }
             
-            // DSM Partitioning [Step3]
-            
-            
-        }while(list.isEmpty());
+            // partitioning is over if the list is empty [Step3]
+            //if(list.isEmpty()) break;
+            if(g>10) break;
+
+            // DSM Partitioning [Step4]
+            for(int i=0; i<list.size(); i++){
+                // search a circuit
+                DefaultMutableTreeNode node = this.dsm.findNode(this.dsm.getRoot(), list.get(i));
+                ArrayList<String> circuit = new ArrayList();
+                if(this.partitionEntryHelper(new ArrayList(), circuit, node)){
+                    // found a circuit, make a group 
+                    DefaultMutableTreeNode args[] = new DefaultMutableTreeNode[circuit.size()];
+                    for(int j=0; j<args.length; j++){
+                        args[j] = this.dsm.findNode(this.dsm.getRoot(), circuit.get(j));
+                    }
+                    this.dsm.group("partitioning.group."+g, args);
+                    
+                    // remove from the list
+                    for(int j=0; j<args.length; j++){
+                        list.remove(circuit.get(j));
+                    }
+                    
+                    // start over
+                    break;
+                }
+            }
+        }
         
     }
     
