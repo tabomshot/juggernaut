@@ -31,7 +31,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeNode;
-import cse.se.juggernaut.Module;
 
 /**
  *
@@ -105,17 +104,23 @@ public class Controller {
             System.out.println("Table changed ");
             ArrayList<String> ten = dsm.getTableEntry();
             for(int i=0; i<ten.size(); i++){
-                ArrayList dep = new ArrayList();
                 DefaultMutableTreeNode node = dsm.findNode(dsm.getRoot(), ten.get(i));
+                ArrayList dep = ((Module)node.getUserObject()).depList;
                 if(node.isLeaf()){
                     for(int j=0; j<ten.size() ; j++){
-                        String val = (String) this.table.getModel().getValueAt(i, j);
-                        if(  val.contains("x")){
-                            System.out.println("dep : "+ dsm.findNode(dsm.getRoot(), ten.get(j)));
-                            dep.add( dsm.findNode(dsm.getRoot(), ten.get(j)) );
+                        if( i != j){
+                            DefaultMutableTreeNode tomod = dsm.findNode(dsm.getRoot(), ten.get(j));
+                            String val = (String) this.table.getModel().getValueAt(i, j);
+                            if(  val.contains("x")){
+                                if( !dep.contains(tomod.toString())){
+                                    dep.add( tomod.toString() );
+                                }
+                                System.out.println("dep : "+ dsm.findNode(dsm.getRoot(), ten.get(j)));
+                            } else {
+                                dep.remove(tomod);
+                            }
                         }
                     }
-                    ((Module)node.getUserObject()).depList = dep;
                 }
             }
         }
@@ -228,10 +233,16 @@ public class Controller {
                 for(int j=0; j<el.size(); j++){
                     deplist[j] = 0;
                 }
-                DefaultMutableTreeNode node = this.getModel().findNode(this.getModel().getRoot(), el.get(i));
-                Module module = (Module) node.getUserObject();
+                
+                DefaultMutableTreeNode node ;
+                node = this.getModel().findNode(this.getModel().getRoot(), el.get(i));
+                Module module;
+                module = (Module) node.getUserObject();
+                
                 for(int j=0; j<module.depList.size(); j++){
-                    deplist[ el.indexOf(module.depList.get(j)) ] = 1;
+                    if(el.contains(module.depList.get(j))){
+                        deplist[ el.indexOf(module.depList.get(j)) ] = 1;
+                    }
                 }
                 
                 // write line

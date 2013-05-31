@@ -263,6 +263,11 @@ public class Interface extends javax.swing.JFrame {
         IconSaveDSM.setFocusable(false);
         IconSaveDSM.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         IconSaveDSM.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        IconSaveDSM.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                IconSaveDSMActionPerformed(evt);
+            }
+        });
         jToolBar2.add(IconSaveDSM);
 
         IconSaveDSMAs.setIcon(new javax.swing.ImageIcon(getClass().getResource("/cse/se/juggernaut/icons/save-clsx-as.png"))); // NOI18N
@@ -533,9 +538,9 @@ public class Interface extends javax.swing.JFrame {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 550, Short.MAX_VALUE)
+            .addGap(0, 554, Short.MAX_VALUE)
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 550, Short.MAX_VALUE))
+                .addComponent(tablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 554, Short.MAX_VALUE))
         );
 
         jSplitPane1.setRightComponent(jPanel2);
@@ -863,10 +868,11 @@ public class Interface extends javax.swing.JFrame {
 
             this.setTreeViewUpdate();
             this.setIconEnabled();
-            this.dsmFileOpened = false;
         } else {
               JOptionPane.showMessageDialog(this, "Error creating new DSM", "New DSM Error" , JOptionPane.ERROR_MESSAGE);
         }
+        this.dsmChanged = false;
+        this.dsmFileOpened = false;
     }//GEN-LAST:event_ItemNewDSMActionPerformed
 
     private void IconNewDSMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconNewDSMActionPerformed
@@ -1135,6 +1141,11 @@ public class Interface extends javax.swing.JFrame {
         
         this.ItemSaveDSMAsActionPerformed(evt);
     }//GEN-LAST:event_IconSaveDSMAsActionPerformed
+
+    private void IconSaveDSMActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_IconSaveDSMActionPerformed
+        // TODO add your handling code here:
+        this.ItemSaveDSMActionPerformed(evt);
+    }//GEN-LAST:event_IconSaveDSMActionPerformed
 
     
     // Custom variable declaration
