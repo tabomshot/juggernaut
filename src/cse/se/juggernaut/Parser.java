@@ -9,7 +9,6 @@ package cse.se.juggernaut;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Enumeration;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -39,7 +38,6 @@ public class Parser {
                 Element node = (Element)child;
                 if(node.getTagName().equals("group")){
                     // group: make treenode for group and add its children
-                    // sort of tricky way
                     DefaultMutableTreeNode tn = new DefaultMutableTreeNode(node.getAttribute("name"));
                     pnode.add(tn);
                     Parser.parseFileHelper(node, tn);
@@ -72,22 +70,23 @@ public class Parser {
                 
                 if(child instanceof Element){
                     Element node = (Element)child;
-                    if(node.getAttribute("name").equalsIgnoreCase("ROOT")){
+                    if(node.getAttribute("name").contains("ROOT") || node.getAttribute("name").contains("root")){
                         // call recursive function
                         Parser.parseFileHelper(node, res);
                     } else {
                         // error
+                        System.out.println("error parse clsx");
                         return res;
                     }
                 }
             }
             
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();  
+        } catch (SAXException ex) {
+            Logger.getLogger(Parser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Parser.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParserConfigurationException ex) {
+            Logger.getLogger(Parser.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return res;
